@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "aPBOwVe/WsdjlPij5mjj7uRqJYHX3xZg7lI1Y7Scmdk=",
+  "Source": "FrogChatWebApi",
+  "BasePath": "_content/FrogChatWebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

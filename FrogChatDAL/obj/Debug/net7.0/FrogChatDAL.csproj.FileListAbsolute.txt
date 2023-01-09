@@ -1,0 +1,17 @@
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\bin\Debug\net7.0\FrogChatDAL.deps.json
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\bin\Debug\net7.0\FrogChatDAL.runtimeconfig.json
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\bin\Debug\net7.0\FrogChatDAL.dll
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\bin\Debug\net7.0\FrogChatDAL.pdb
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\bin\Debug\net7.0\FrogChatModel.dll
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\bin\Debug\net7.0\FrogChatModel.pdb
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.csproj.AssemblyReference.cache
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.AssemblyInfoInputs.cache
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.AssemblyInfo.cs
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.csproj.CoreCompileInputs.cache
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.csproj.CopyComplete
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.dll
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\refint\FrogChatDAL.dll
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.pdb
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\FrogChatDAL.genruntimeconfig.cache
+C:\Users\root\source\repos\FrogChatWebApi\FrogChatDAL\obj\Debug\net7.0\ref\FrogChatDAL.dll
