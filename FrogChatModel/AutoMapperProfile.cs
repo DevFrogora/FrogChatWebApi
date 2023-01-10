@@ -14,6 +14,8 @@ namespace FrogChatModel
             CreateMap<DTOUser, TblUser>();
             CreateMap<TblUser, DTOUser>();
 
+            //CreateMap< IEnumerable<TblUser>, IEnumerable<DTOUser> >();
+
         }
 
     }

@@ -15,13 +15,13 @@ namespace FrogChatDAL.Repositories.InMemory
             new TblRole { Id = 2, Name = "Manager" },
             new TblRole { Id = 3, Name = "User" }
         };
-        public Task<TblRole?> GetRoleAsync(int id)
+        public Task<TblRole> GetRoleAsync(int id)
         {
             return Task.FromResult(
-                roles.FirstOrDefault(role => role.Id == id));
+                roles.First(role => role.Id == id));
         }
 
-        public async Task<IEnumerable<TblRole?>> GetRolesAsync()
+        public async Task<IEnumerable<TblRole>> GetRolesAsync()
         {
             return await Task.FromResult(roles);
         }

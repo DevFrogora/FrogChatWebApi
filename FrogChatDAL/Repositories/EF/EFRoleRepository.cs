@@ -17,14 +17,14 @@ namespace FrogChatDAL.Repositories.EF
             this.frogChatDbContext = frogChatDbContext;
         }
 
-        public async Task<TblRole?> GetRoleAsync(int roleId)
+        public async Task<TblRole> GetRoleAsync(int roleId)
         {
             return await frogChatDbContext.Roles
-                .FirstOrDefaultAsync(r => r.Id == roleId);
+                .FirstAsync(r => r.Id == roleId);
         }
 
 
-        public async Task<IEnumerable<TblRole?>> GetRolesAsync()
+        public async Task<IEnumerable<TblRole>> GetRolesAsync()
         {
             return await frogChatDbContext.Roles.ToListAsync();
         }

@@ -9,7 +9,7 @@ namespace FrogChatDAL.Repositories
 {
     public interface IRoleRepository
     {
-        Task<TblRole?> GetRoleAsync(int id);
-        Task<IEnumerable<TblRole?>> GetRolesAsync();
+        Task<TblRole> GetRoleAsync(int id);
+        Task<IEnumerable<TblRole>> GetRolesAsync();
     }
 }

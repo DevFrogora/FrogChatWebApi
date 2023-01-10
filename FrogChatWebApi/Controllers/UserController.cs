@@ -23,10 +23,11 @@ namespace FrogChatWebApi.Controllers
         {
             try
             {
-                return Ok(await userRepository.GetUsersAsync());
-
+                return Ok(mapper.Map<IEnumerable<DTOUser>>(
+                    await userRepository.GetUsersAsync()
+                    ));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error retrieving data from database");
@@ -52,11 +53,11 @@ namespace FrogChatWebApi.Controllers
         {
             try
             {
-                var dest = mapper.Map<DTOUser, TblUser>(user);
+                var dest = mapper.Map<TblUser>(user);
                 dest.Role = new TblRole { Id = 3, Name = "User" };
 
                 var newUser = await userRepository.AddUserAsync(dest);
-                var newUserDTO = mapper.Map<TblUser, DTOUser>(newUser);
+                var newUserDTO = mapper.Map<DTOUser>(newUser);
 
                 return CreatedAtAction(nameof(GetUser), new { id = newUserDTO.Identifier }, newUserDTO);
             }

@@ -38,45 +38,30 @@ namespace FrogChatDAL.Repositories.InMemory
 
         public Task<TblUser> DeleteUserAsync(string id)
         {
-            var result = Users.FirstOrDefault(user => user.Identifier.Equals(id));
-            if (result != null)
-            {
-                Users.Remove(result);
-            }
+            var result = Users.First(user => user.Identifier.Equals(id));
+            Users.Remove(result);
+
             return Task.FromResult(result);
         }
 
         public Task<TblUser> GetUserAsync(string id)
         {
-            try
-            {
-                return Task.FromResult(Users.FirstOrDefault(user => user.Identifier.Equals(id)));
-            }catch(Exception ex)
-            {
-                throw;
-            }
-            
+            return Task.FromResult(Users.First(user => user.Identifier.Equals(id)));
         }
 
-        public async Task<IEnumerable<TblUser?>> GetUsersAsync()
+        public async Task<IEnumerable<TblUser>> GetUsersAsync()
         {
             return await Task.FromResult(Users);
         }
 
-        public async Task<TblUser?> UpdateUserAsync(TblUser user)
+        public async Task<TblUser> UpdateUserAsync(TblUser user)
         {
-            TblUser? result = null;
-            if (user != null)
-            {
-                result = Users.FirstOrDefault(u => u.Identifier == user.Identifier);
-                if (result != null)
-                {
-                    result.Name = user.Name;
-                    result.Email = user.Email;
-                    result.PhotoPath = user.PhotoPath;
-                    result.RoleId = user.RoleId;
-                }
-            }
+            var result = Users.First(u => u.Identifier == user.Identifier);
+            result.Name = user.Name;
+            result.Email = user.Email;
+            result.PhotoPath = user.PhotoPath;
+            result.RoleId = user.RoleId;
+
             return await Task.FromResult(result); ;
         }
     }

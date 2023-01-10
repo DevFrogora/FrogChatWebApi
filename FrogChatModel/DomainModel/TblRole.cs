@@ -9,8 +9,8 @@ namespace FrogChatModel.DomainModel
     public class TblRole
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public ICollection<TblUser> Users { get; set; }
+        public ICollection<TblUser>? Users { get; set; }
     }
 }
