@@ -20,7 +20,13 @@ namespace FrogChatConsole
                         }).Build();
 
             var iUserService = host.Services.GetRequiredService<IUserService>();
-            Console.WriteLine(await iUserService.GetUsersAsync());
+            foreach(var user in await iUserService.GetUsersAsync())
+            {
+                Console.Write(user.Name + " ,");
+                Console.Write(user.Identifier+" ,"); 
+                Console.WriteLine(user.Email);
+            }
+            Console.WriteLine();
         }
 
 
