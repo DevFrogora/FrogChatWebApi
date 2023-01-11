@@ -9,7 +9,6 @@ namespace FrogChatDAL.Repositories
 {
     public interface IUserRepository
     {
-
         Task<TblUser> AddUserAsync(TblUser user);
         Task<TblUser> GetUserAsync(string id);
         Task<IEnumerable<TblUser>> GetUsersAsync();

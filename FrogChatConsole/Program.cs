@@ -1,7 +1,7 @@
 ﻿using FrogChatService;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using FrogChatModel.DomainModel;
 namespace FrogChatConsole
 {
     public class Program
@@ -11,7 +11,7 @@ namespace FrogChatConsole
             var host = Host.CreateDefaultBuilder(args)
                         .ConfigureServices(services =>
                         {
-                            services.AddSingleton<UserService>();
+                            //services.AddSingleton<UserService>();
 
                             services.AddHttpClient<IUserService, UserService>(client =>
                             {
@@ -19,16 +19,27 @@ namespace FrogChatConsole
                             });
                         }).Build();
 
-            var iUserService = host.Services.GetRequiredService<IUserService>();
-            foreach(var user in await iUserService.GetUsersAsync())
+            IUserService userService = host.Services.GetRequiredService<IUserService>();
+            await userService.UpdateUser(new DTOUser()
             {
-                Console.Write(user.Name + " ,");
-                Console.Write(user.Identifier+" ,"); 
-                Console.WriteLine(user.Email);
-            }
-            Console.WriteLine();
+                Id = 2,
+                Name = "demo name",
+                Email = "DemoEmailsadsa.com",
+                Identifier = "109111229606383522361",
+                PhotoPath = @"https://lh3.googleusercontent.com/a/AEdFTp5jcsydwm4AsQRoEruEyjnu9ic2B8vX1wc3zBC7=s96-c"
+            });
+            var user = await userService.GetUser("109111229606383522361");
+            Console.WriteLine(user.Name);
+            Console.WriteLine(user.Email);
         }
 
 
     }
 }
+
+//foreach(var user in await userService.GetUsersAsync())
+//{
+//    Console.Write(user.Name + " ,");
+//    Console.Write(user.Identifier+" ,"); 
+//    Console.WriteLine(user.Email);
+//}

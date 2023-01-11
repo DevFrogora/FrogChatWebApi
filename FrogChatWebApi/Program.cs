@@ -24,7 +24,7 @@ namespace FrogChatWebApi
             builder.Services.AddControllers();
 
             //DI
-            builder.Services.AddScoped<IUserRepository, InMemoryUserRepository>();
+            builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
             builder.Services.AddScoped<IRoleRepository, EFRoleRepository>();
             var app = builder.Build();
 
