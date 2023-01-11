@@ -5,9 +5,9 @@ namespace FrogChatService
     public interface IUserService
     {
         Task<IEnumerable<DTOUser>> GetUsersAsync();
-        Task<DTOUser> GetUser(string identifier);
-        Task<DTOUser> UpdateUser(DTOUser updatedUser);
-        Task<DTOUser> AddUser(DTOUser user);
-        Task<DTOUser> DeleteUser(DTOUser updatedUser);
+        Task<DTOUser> GetUserAsync(string identifier);
+        Task<DTOUser> UpdateUserAsync(DTOUser updatedUser);
+        Task<DTOUser> AddUserAsync(DTOUser user);
+        Task<DTOUser> DeleteUserAsync(DTOUser updatedUser);
     }
 }

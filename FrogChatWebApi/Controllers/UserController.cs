@@ -86,5 +86,22 @@ namespace FrogChatWebApi.Controllers
                     "Error retrieving data from database");
             }
         }
+
+        [HttpDelete("{identifier}")]
+        public async Task<ActionResult> DeleteUser(string identifier)
+        {
+            try
+            {
+                var newUser = await userRepository.DeleteUserAsync(identifier);
+                var newUserDTO = mapper.Map<DTOUser>(newUser);
+
+                return Ok(newUserDTO);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from database");
+            }
+        }
     }
 }
