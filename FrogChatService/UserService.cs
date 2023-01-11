@@ -29,9 +29,19 @@ namespace FrogChatService
             //return  await httpClient.GetFromJsonAsync<List<DTOUser>>("api/user") ?? throw new Exception();
         }
 
+        public async Task<DTOUser> AddUser(DTOUser updatedUser)
+        {
+            return await httpClient.PostJsonAsync<DTOUser>("api/user", updatedUser) ?? throw new Exception();
+        }
+
         public async Task<DTOUser> UpdateUser(DTOUser updatedUser)
         {
             return await httpClient.PutJsonAsync<DTOUser>("api/user", updatedUser) ?? throw new Exception();
+        }
+
+        public async Task<DTOUser> DeleteUser(DTOUser updatedUser)
+        {
+            return await httpClient.DeletetJsonAsync<DTOUser>($"api/user/{updatedUser.Identifier}") ?? throw new Exception();
         }
     }
 }

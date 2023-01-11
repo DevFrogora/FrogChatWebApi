@@ -19,7 +19,19 @@ namespace FrogChatService
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadFromJsonAsync<TValue>();
+        }
 
+        public static async Task<TValue?> PostJsonAsync<TValue>(this HttpClient client, [StringSyntax("Uri")] string? requestUri, TValue value, JsonSerializerOptions? options = null, CancellationToken cancellationToken = default)
+        {
+            var response = await client.PostAsJsonAsync<TValue>(requestUri, value, options, cancellationToken);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<TValue>();
+        }
+
+        public static async Task<TValue?> DeletetJsonAsync<TValue>(this HttpClient client, [StringSyntax("Uri")] string? requestUri)
+        {
+            return await client.DeleteFromJsonAsync<TValue>(requestUri);
         }
     }
 }
