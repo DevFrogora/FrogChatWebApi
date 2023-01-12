@@ -15,6 +15,7 @@ namespace FrogChatDAL.Repositories.InMemory
         public InMemoryAccountRepository(UserManager<IdentityUser> userManager)
         {
             this.userManager = userManager;
+
         }
 
         public async Task<IdentityResult> CreateUserAsync(SignUpUserDto signUpUserDto)
@@ -24,7 +25,7 @@ namespace FrogChatDAL.Repositories.InMemory
                 UserName = signUpUserDto.Name,
                 Email = signUpUserDto.Email,
             };
-            return await userManager.CreateAsync(user,signUpUserDto.Identifier);
+            return await userManager.CreateAsync(user,signUpUserDto.Identifier+"FrogChat@");
 
         }
     }

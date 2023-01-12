@@ -21,8 +21,10 @@ namespace FrogChatWebApi
             builder.Services.AddDbContext<FrogChatDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<FrogChatDbContext>();
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._+";
+            }).AddEntityFrameworkStores<FrogChatDbContext>();
 
 
 

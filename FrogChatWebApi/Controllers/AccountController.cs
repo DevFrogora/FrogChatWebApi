@@ -17,8 +17,14 @@ namespace FrogChatWebApi.Controllers
         }
 
         [HttpPost("signup")]
-        public Task<ActionResult> Signup(SignUpUserDto user)
+        public async Task<ActionResult> Signup(SignUpUserDto user)
         {
+            var result  = await accountRepository.CreateUserAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+
+            }
             return Ok();
         }
     }
