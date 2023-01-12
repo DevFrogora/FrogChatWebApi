@@ -18,30 +18,30 @@ namespace FrogChatService
             this.httpClient = httpClient;
         }
 
-        public async Task<DTOUser> GetUserAsync(string identifier)
+        public async Task<SignUpUserDto> GetUserAsync(string identifier)
         {
-            return await httpClient.GetFromJsonAsync<DTOUser>($"api/user/{identifier}") ?? throw new Exception();
+            return await httpClient.GetFromJsonAsync<SignUpUserDto>($"api/user/{identifier}") ?? throw new Exception();
         }
 
-        public async Task<IEnumerable<DTOUser>> GetUsersAsync()
+        public async Task<IEnumerable<SignUpUserDto>> GetUsersAsync()
         {
-            return await httpClient.GetFromJsonAsync<DTOUser[]>("api/user") ?? throw new Exception();
+            return await httpClient.GetFromJsonAsync<SignUpUserDto[]>("api/user") ?? throw new Exception();
             //return  await httpClient.GetFromJsonAsync<List<DTOUser>>("api/user") ?? throw new Exception();
         }
 
-        public async Task<DTOUser> AddUserAsync(DTOUser updatedUser)
+        public async Task<SignUpUserDto> AddUserAsync(SignUpUserDto updatedUser)
         {
-            return await httpClient.PostJsonAsync<DTOUser>("api/user", updatedUser) ?? throw new Exception();
+            return await httpClient.PostJsonAsync<SignUpUserDto>("api/user", updatedUser) ?? throw new Exception();
         }
 
-        public async Task<DTOUser> UpdateUserAsync(DTOUser updatedUser)
+        public async Task<SignUpUserDto> UpdateUserAsync(SignUpUserDto updatedUser)
         {
-            return await httpClient.PutJsonAsync<DTOUser>("api/user", updatedUser) ?? throw new Exception();
+            return await httpClient.PutJsonAsync<SignUpUserDto>("api/user", updatedUser) ?? throw new Exception();
         }
 
-        public async Task<DTOUser> DeleteUserAsync(DTOUser updatedUser)
+        public async Task<SignUpUserDto> DeleteUserAsync(SignUpUserDto updatedUser)
         {
-            return await httpClient.DeletetJsonAsync<DTOUser>($"api/user/{updatedUser.Identifier}") ?? throw new Exception();
+            return await httpClient.DeletetJsonAsync<SignUpUserDto>($"api/user/{updatedUser.Identifier}") ?? throw new Exception();
         }
     }
 }

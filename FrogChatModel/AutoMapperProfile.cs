@@ -11,8 +11,8 @@ namespace FrogChatModel
     public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile() {
-            CreateMap<DTOUser, TblUser>();
-            CreateMap<TblUser, DTOUser>();
+            //CreateMap<SignUpUserDto, TblUser>();
+            //CreateMap<TblUser, SignUpUserDto>();
 
             //CreateMap< IEnumerable<TblUser>, IEnumerable<DTOUser> >();
 

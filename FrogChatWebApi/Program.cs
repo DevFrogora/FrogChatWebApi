@@ -1,8 +1,9 @@
 using FrogChatDAL;
 using FrogChatDAL.Repositories;
-using FrogChatDAL.Repositories.EF;
+//using FrogChatDAL.Repositories.EF;
 using FrogChatDAL.Repositories.InMemory;
 using FrogChatModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -20,13 +21,21 @@ namespace FrogChatWebApi
             builder.Services.AddDbContext<FrogChatDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<FrogChatDbContext>();
+
+
+
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
             builder.Services.AddControllers();
 
             //DI
-            builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
-            builder.Services.AddScoped<IRoleRepository, EFRoleRepository>();
+            builder.Services.AddTransient<IAccountRepository, InMemoryAccountRepository>();
+
+
             var app = builder.Build();
+
+
 
             // Configure the HTTP request pipeline.
 

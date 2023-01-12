@@ -20,26 +20,26 @@ namespace FrogChatConsole
                         }).Build();
 
             IUserService userService = host.Services.GetRequiredService<IUserService>();
-            var user1 = await userService.AddUserAsync(new DTOUser()
+            var user1 = await userService.AddUserAsync(new SignUpUserDto()
             {
-                Id = 3,
+                //Id = 3,
                 Name = "demo name",
                 Email = "DemoEmailsadsa.com",
                 Identifier = "109111229606383522361",
                 PhotoPath = @"https://lh3.googleusercontent.com/a/AEdFTp5jcsydwm4AsQRoEruEyjnu9ic2B8vX1wc3zBC7=s96-c"
             });
 
-            var user2 = await userService.AddUserAsync(new DTOUser()
+            var user2 = await userService.AddUserAsync(new SignUpUserDto()
             {
-                Id = 4,
+                //Id = 4,
                 Name = "Frogo name",
                 Email = "FrogEmailS23.com",
                 Identifier = "10911122960638352290",
                 PhotoPath = @"https://lh3.googleusercontent.com/a/AEdFTp5jcsydwm4AsQRoEruEyjnu9ic2B8vX1wc3zBC7=s96-c"
             });
-            var user3 = await userService.AddUserAsync(new DTOUser()
+            var user3 = await userService.AddUserAsync(new SignUpUserDto()
             {
-                Id = 5,
+                //Id = 5,
                 Name = "pano name",
                 Email = "PenoEmails214324.com",
                 Identifier = "109111229606383522456",
