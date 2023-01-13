@@ -12,6 +12,6 @@ namespace FrogChatDAL.Repositories
     public interface IAccountRepository
     {
         Task<IdentityResult> CreateUserAsync(SignUpUserDto signUpUserDto);
-        Task<SignInResult> PasswordSignInAsync(SignInDto signInDto);
+        Task<string> PasswordSignInAsync(SignInDto signInDto);
     }
 }

@@ -22,25 +22,24 @@ namespace FrogChatWebApi.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult> Signup(SignUpUserDto user)
         {
-            var result  = await accountRepository.CreateUserAsync(user);
+            var result = await accountRepository.CreateUserAsync(user);
             if (result.Succeeded)
             {
 
                 return Ok(result.Succeeded);
             }
-            return BadRequest(result.Errors); 
+            return BadRequest(result.Errors);
         }
 
         [HttpPost("signin")]
         public async Task<ActionResult> SignIn(SignInDto signInDto)
         {
-         var result =  await accountRepository.PasswordSignInAsync(signInDto);
-            if (!result.Succeeded)
+            var result = await accountRepository.PasswordSignInAsync(signInDto);
+            if (string.IsNullOrEmpty(result))
             {
-                //return BadRequest(result.Errors);
-
+                return Unauthorized();
             }
-            return Ok();
+            return Ok(result);
         }
     }
 }

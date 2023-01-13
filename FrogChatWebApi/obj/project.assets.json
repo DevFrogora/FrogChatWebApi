@@ -1628,6 +1628,7 @@
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "FrogChatModel": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.2",
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "7.0.2",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.1"
@@ -4399,7 +4400,6 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "FrogChatDAL >= 1.0.0",
-      "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.2",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.1"
     ]
   },
@@ -4452,10 +4452,6 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
-          "Microsoft.AspNetCore.Authentication.JwtBearer": {
-            "target": "Package",
-            "version": "[7.0.2, )"
-          },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
