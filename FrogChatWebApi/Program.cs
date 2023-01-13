@@ -1,4 +1,5 @@
 using FrogChatDAL;
+using FrogChatDAL.DomainModel;
 using FrogChatDAL.Repositories;
 //using FrogChatDAL.Repositories.EF;
 using FrogChatDAL.Repositories.InMemory;
@@ -21,12 +22,15 @@ namespace FrogChatWebApi
             builder.Services.AddDbContext<FrogChatDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._+";
             }).AddEntityFrameworkStores<FrogChatDbContext>();
 
-
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
             builder.Services.AddControllers();

@@ -1,4 +1,5 @@
-﻿using FrogChatModel.DomainModel;
+﻿using FrogChatDAL.DomainModel;
+using FrogChatModel.DomainModel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FrogChatDAL
 {
-    public class FrogChatDbContext : IdentityDbContext
+    public class FrogChatDbContext : IdentityDbContext<ApplicationUser>
     {
         public FrogChatDbContext(DbContextOptions<FrogChatDbContext> options)
             : base(options)

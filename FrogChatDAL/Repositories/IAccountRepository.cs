@@ -1,4 +1,5 @@
 ﻿using FrogChatModel.DomainModel;
+using FrogChatModel.DTOModel;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace FrogChatDAL.Repositories
     public interface IAccountRepository
     {
         Task<IdentityResult> CreateUserAsync(SignUpUserDto signUpUserDto);
+        Task<SignInResult> PasswordSignInAsync(SignInDto signInDto);
     }
 }
