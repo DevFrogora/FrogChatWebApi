@@ -45,7 +45,7 @@ namespace FrogChatDAL.Repositories.InMemory
 
         public async Task<string> PasswordSignInAsync(SignInDto signInDto)
         {
-            var result=   await  signInManager.PasswordSignInAsync(signInDto.Email,
+            var result=   await  signInManager.PasswordSignInAsync(signInDto.Email.Split("@gmail.com")[0],
                 signInDto.Identifier + "FrogChat@", signInDto.RememberMe, false);
 
             if (!result.Succeeded)
@@ -58,14 +58,15 @@ namespace FrogChatDAL.Repositories.InMemory
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var authSiginKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JWT:Secret"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetValue<string>("Jwt:key")));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: configuration["JWT:ValidIssuer"],
-                audience: configuration["JWT:ValidAudience"],
+                issuer: configuration.GetValue<string>("Jwt:Issuer"),
+                audience: configuration.GetValue<string>("Jwt:Audience"),
                 expires: DateTime.Now.AddDays(1),
                 claims : authClaims,
-                signingCredentials: new SigningCredentials(authSiginKey, SecurityAlgorithms.HmacSha256Signature)
+                signingCredentials: credentials
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
