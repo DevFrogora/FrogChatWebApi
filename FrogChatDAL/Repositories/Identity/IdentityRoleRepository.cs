@@ -1,4 +1,5 @@
-﻿using FrogChatModel.DTOModel;
+﻿using FrogChatDAL.DomainModel;
+using FrogChatModel.DTOModel;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,34 @@ namespace FrogChatDAL.Repositories.Identity
     public class IdentityRoleRepository : IRoleRepository
     {
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-
-        public IdentityRoleRepository(RoleManager<IdentityRole> roleManager)
+        public IdentityRoleRepository(RoleManager<IdentityRole> roleManager,UserManager<ApplicationUser> userManager)
         {
             this.roleManager = roleManager;
+            this.userManager = userManager;
         }
+
+        public async Task<IdentityResult> AddUserRoleAsync(string userEmail, string roleName)
+        {
+            var user = await userManager.FindByEmailAsync(addUserRoleDto.UserEmail);
+            if (user == null)
+            {
+                return null;
+            }
+            return await userManager.AddToRoleAsync(user, addUserRoleDto.RoleName);
+        }
+
+        public async Task<IdentityResult> RemoveUserRoleAsync(string userEmail, string roleName)
+        {
+            var user = await userManager.FindByEmailAsync(addUserRoleDto.UserEmail);
+            if (user == null)
+            {
+                return null;
+            }
+            return await userManager.RemoveFromRoleAsync(user, addUserRoleDto.RoleName);
+        }
+
 
         public async Task<IdentityResult> CreatRole([Required] RoleDto roleDto)
         {

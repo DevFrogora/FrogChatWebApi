@@ -14,6 +14,10 @@ namespace FrogChatDAL.Repositories
         Task<IdentityResult> CreatRole(RoleDto roleDto);
         IEnumerable<IdentityRole> GetRoles();
         Task<IdentityResult> UpdateRole(RoleDto roleDto);
+        Task<IdentityResult> AddUserRoleAsync(string userEmail,string roleName);
+        Task<IdentityResult> RemoveUserRoleAsync(string userEmail, string roleName);
+
+
 
     }
 }
