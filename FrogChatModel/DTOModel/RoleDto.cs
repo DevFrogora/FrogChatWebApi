@@ -9,7 +9,8 @@ namespace FrogChatModel.DTOModel
 {
     public class RoleDto
     {
-        [Required]
+        public string Id { get; set; } = string.Empty;
+        [Required(ErrorMessage ="Role Name is required")]
         public string Name { get; set; } = string.Empty;
     }
 }

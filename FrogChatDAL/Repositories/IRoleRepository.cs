@@ -13,6 +13,7 @@ namespace FrogChatDAL.Repositories
     {
         Task<IdentityResult> CreatRole(RoleDto roleDto);
         IEnumerable<IdentityRole> GetRoles();
+        Task<IdentityResult> UpdateRole(RoleDto roleDto);
 
     }
 }

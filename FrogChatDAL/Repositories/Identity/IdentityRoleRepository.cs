@@ -28,5 +28,15 @@ namespace FrogChatDAL.Repositories.Identity
         {
             return roleManager.Roles.ToList();
         }
+
+        public async Task<IdentityResult> UpdateRole(RoleDto roleDto)
+        {
+            var role = await roleManager.FindByIdAsync(roleDto.Id);
+            if(role == null)
+            {
+                return null;
+            }
+            return await roleManager.UpdateAsync(role);
+        }
     }
 }

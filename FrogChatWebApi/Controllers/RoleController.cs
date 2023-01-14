@@ -37,5 +37,17 @@ namespace FrogChatWebApi.Controllers
             }
             return BadRequest(result.Errors);
         }
+
+        [HttpPut]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<ActionResult> UpdateRole(RoleDto roleDto)
+        {
+            var result = await roleRepository.UpdateRole(roleDto);
+            if (result.Succeeded)
+            {
+                return Ok(result.Succeeded);
+            }
+            return BadRequest(result.Errors);
+        }
     }
 }
