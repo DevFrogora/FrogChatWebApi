@@ -1,6 +1,7 @@
 using FrogChatDAL;
 using FrogChatDAL.DomainModel;
 using FrogChatDAL.Repositories;
+using FrogChatDAL.Repositories.Identity;
 //using FrogChatDAL.Repositories.EF;
 using FrogChatDAL.Repositories.InMemory;
 using FrogChatModel;
@@ -64,7 +65,9 @@ namespace FrogChatWebApi
             builder.Services.AddControllers();
 
             //DI
-            builder.Services.AddTransient<IAccountRepository, InMemoryAccountRepository>();
+            builder.Services.AddTransient<IAccountRepository, IdentityAccountRepository>();
+            builder.Services.AddTransient<IRoleRepository, IdentityRoleRepository>();
+
 
 
             var app = builder.Build();

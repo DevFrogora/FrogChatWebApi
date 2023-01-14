@@ -25,7 +25,6 @@ namespace FrogChatWebApi.Controllers
             var result = await accountRepository.CreateUserAsync(user);
             if (result.Succeeded)
             {
-
                 return Ok(result.Succeeded);
             }
             return BadRequest(result.Errors);
