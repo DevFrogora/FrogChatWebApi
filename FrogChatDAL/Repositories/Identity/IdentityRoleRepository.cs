@@ -21,28 +21,28 @@ namespace FrogChatDAL.Repositories.Identity
             this.userManager = userManager;
         }
 
-        public async Task<IdentityResult> AddUserRoleAsync(string userEmail, string roleName)
+        public async Task<IdentityResult> AddUserRoleAsync(string userName, string roleName)
         {
-            var user = await userManager.FindByEmailAsync(addUserRoleDto.UserEmail);
+            var user = await userManager.FindByNameAsync(userName);
             if (user == null)
             {
                 return null;
             }
-            return await userManager.AddToRoleAsync(user, addUserRoleDto.RoleName);
+            return await userManager.AddToRoleAsync(user, roleName.ToUpper());
         }
 
-        public async Task<IdentityResult> RemoveUserRoleAsync(string userEmail, string roleName)
+        public async Task<IdentityResult> RemoveUserRoleAsync(string userName, string roleName)
         {
-            var user = await userManager.FindByEmailAsync(addUserRoleDto.UserEmail);
+            var user = await userManager.FindByNameAsync(userName);
             if (user == null)
             {
                 return null;
             }
-            return await userManager.RemoveFromRoleAsync(user, addUserRoleDto.RoleName);
+            return await userManager.RemoveFromRoleAsync(user,roleName);
         }
 
 
-        public async Task<IdentityResult> CreatRole([Required] RoleDto roleDto)
+        public async Task<IdentityResult> CreatRole([Required] AddRoleDto roleDto)
         {
             return await roleManager.CreateAsync(new IdentityRole(roleDto.Name));
         }
@@ -52,13 +52,14 @@ namespace FrogChatDAL.Repositories.Identity
             return roleManager.Roles.ToList();
         }
 
-        public async Task<IdentityResult> UpdateRole(RoleDto roleDto)
+        public async Task<IdentityResult> UpdateRole(UpdateRoleDto roleDto)
         {
             var role = await roleManager.FindByIdAsync(roleDto.Id);
             if(role == null)
             {
                 return null;
             }
+            role.Name = roleDto.Name;
             return await roleManager.UpdateAsync(role);
         }
     }

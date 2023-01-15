@@ -29,7 +29,7 @@ namespace FrogChatWebApi
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
-                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._+";
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             }).AddEntityFrameworkStores<FrogChatDbContext>();
 
             builder.Services.Configure<IdentityOptions>(options =>
@@ -61,12 +61,13 @@ namespace FrogChatWebApi
             });
 
 
-            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile),typeof(DomainAutoMapperProfile));
             builder.Services.AddControllers();
 
             //DI
-            builder.Services.AddTransient<IAccountRepository, IdentityAccountRepository>();
-            builder.Services.AddTransient<IRoleRepository, IdentityRoleRepository>();
+            builder.Services.AddScoped<IAccountRepository, IdentityAccountRepository>();
+            builder.Services.AddScoped<IRoleRepository, IdentityRoleRepository>();
+            builder.Services.AddScoped<IUserRepository, IdentityUserRepository>();
 
 
 

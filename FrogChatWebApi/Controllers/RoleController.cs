@@ -27,7 +27,7 @@ namespace FrogChatWebApi.Controllers
 
         [HttpPost]
         [Authorize(Roles ="SuperAdmin")]
-        public async Task<ActionResult> CreatRole(RoleDto roleDto)
+        public async Task<ActionResult> CreatRole(AddRoleDto roleDto)
         {
 
             var result = await roleRepository.CreatRole(roleDto);
@@ -40,7 +40,7 @@ namespace FrogChatWebApi.Controllers
 
         [HttpPut]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<ActionResult> UpdateRole(RoleDto roleDto)
+        public async Task<ActionResult> UpdateRole(UpdateRoleDto roleDto)
         {
             var result = await roleRepository.UpdateRole(roleDto);
             if (result.Succeeded)

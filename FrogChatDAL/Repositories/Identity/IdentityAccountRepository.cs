@@ -44,19 +44,25 @@ namespace FrogChatDAL.Repositories.Identity
 
         public async Task<string> PasswordSignInAsync(SignInDto signInDto)
         {
-            var result = await signInManager.PasswordSignInAsync(signInDto.Email.Split("@gmail.com")[0],
+            var user = await userManager.FindByEmailAsync(signInDto.Email);
+            if (user == null) return null;
+            var result = await signInManager.PasswordSignInAsync(user.UserName,
                 signInDto.Identifier + "FrogChat@", signInDto.RememberMe, false);
 
-            if (!result.Succeeded)
-            {
-                return null;
-            }
+            if (!result.Succeeded)  return null;
+
+            var userRoles = await userManager.GetRolesAsync(user);
+
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name , signInDto.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Role , "User")
             };
+
+            foreach(var role in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetValue<string>("Jwt:key")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

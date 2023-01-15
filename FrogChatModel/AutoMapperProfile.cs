@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using FrogChatModel.DomainModel;
+using FrogChatModel.DTOModel;
 
 namespace FrogChatModel
 {
@@ -15,7 +15,7 @@ namespace FrogChatModel
             //CreateMap<TblUser, SignUpUserDto>();
 
             //CreateMap< IEnumerable<TblUser>, IEnumerable<DTOUser> >();
-
+            //CreateMap<UserDto,ApplicationUser>
         }
 
     }

@@ -1,5 +1,7 @@
-﻿using FrogChatDAL.Repositories;
+﻿using AutoMapper;
+using FrogChatDAL.Repositories;
 using FrogChatModel.DomainModel;
+using FrogChatModel.DTOModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,30 +14,28 @@ namespace FrogChatWebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IRoleRepository roleRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IMapper mapper;
 
-        public UserController(IRoleRepository roleRepository)
+        public UserController(IRoleRepository roleRepository,IUserRepository userRepository,IMapper mapper)
         {
             this.roleRepository = roleRepository;
+            this.userRepository = userRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult> Get()
+        public  ActionResult Get()
         {
-            var user = new DTOUser()
-            {
-                Email = "my4lol78695@gmail.com",
-                Identifier = "109111229606383522361",
-                Name = "nanu naka",
-                PhotoPath = "https://lh3.googleusercontent.com/a/AEdFTp5jcsydwm4AsQRoEruEyjnu9ic2B8vX1wc3zBC7=s96-c",
-            };
-            return Ok(user);
+            var users = mapper.Map<IEnumerable<UserDto>>(userRepository.GetUsers());
+            return Ok(users);
         }
 
-        [HttpPut("{userEmail}/roles/{roleName}")]
+        [HttpPut("{userName}/roles/{roleName}")]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<ActionResult> AddRole(string userEmail, string roleName)
+        public async Task<ActionResult> AddRole(string userName, string roleName)
         {
-            var result = await roleRepository.AddUserRoleAsync(userEmail, roleName);
+            var result = await roleRepository.AddUserRoleAsync(userName, roleName);
             if (result.Succeeded)
             {
                 return Ok(result.Succeeded);
@@ -45,9 +45,9 @@ namespace FrogChatWebApi.Controllers
 
         [HttpDelete("{userEmail}/roles/{roleName}")]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<ActionResult> RemoveUserRole(string userEmail, string roleName)
+        public async Task<ActionResult> RemoveUserRole(string userName, string roleName)
         {
-            var result = await roleRepository.AddUserRoleAsync(userEmail, roleName);
+            var result = await roleRepository.RemoveUserRoleAsync(userName, roleName);
             if (result.Succeeded)
             {
                 return Ok(result.Succeeded);
@@ -56,11 +56,4 @@ namespace FrogChatWebApi.Controllers
         }
     }
 
-    public class DTOUser
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Identifier { get; set; } = string.Empty;
-        public string PhotoPath { get; set; } = string.Empty;
-    }
 }

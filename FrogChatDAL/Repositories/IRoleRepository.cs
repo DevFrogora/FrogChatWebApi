@@ -11,11 +11,11 @@ namespace FrogChatDAL.Repositories
 {
     public interface IRoleRepository
     {
-        Task<IdentityResult> CreatRole(RoleDto roleDto);
+        Task<IdentityResult> CreatRole(AddRoleDto roleDto);
         IEnumerable<IdentityRole> GetRoles();
-        Task<IdentityResult> UpdateRole(RoleDto roleDto);
-        Task<IdentityResult> AddUserRoleAsync(string userEmail,string roleName);
-        Task<IdentityResult> RemoveUserRoleAsync(string userEmail, string roleName);
+        Task<IdentityResult> UpdateRole(UpdateRoleDto roleDto);
+        Task<IdentityResult> AddUserRoleAsync(string userName, string roleName);
+        Task<IdentityResult> RemoveUserRoleAsync(string userName, string roleName);
 
 
 
