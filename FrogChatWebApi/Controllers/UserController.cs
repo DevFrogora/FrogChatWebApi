@@ -5,6 +5,7 @@ using FrogChatModel.DTOModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FrogChatWebApi.Controllers
 {
@@ -24,8 +25,23 @@ namespace FrogChatWebApi.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("Test")]
+        public ActionResult Test()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                // or
+                var email = identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+                return Ok(email);
+            }
+            return NotFound(null);
+        }
+
+
         [HttpGet]
-        public  ActionResult Get()
+        public  ActionResult GetUsers()
         {
             var users = mapper.Map<IEnumerable<UserDto>>(userRepository.GetUsers());
             return Ok(users);
@@ -33,7 +49,7 @@ namespace FrogChatWebApi.Controllers
 
         [HttpPut("{userName}/roles/{roleName}")]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<ActionResult> AddRole(string userName, string roleName)
+        public async Task<ActionResult> AddUserRole(string userName, string roleName)
         {
             var result = await roleRepository.AddUserRoleAsync(userName, roleName);
             if (result.Succeeded)
@@ -48,6 +64,20 @@ namespace FrogChatWebApi.Controllers
         public async Task<ActionResult> RemoveUserRole(string userName, string roleName)
         {
             var result = await roleRepository.RemoveUserRoleAsync(userName, roleName);
+            if (result.Succeeded)
+            {
+                return Ok(result.Succeeded);
+            }
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult> UpdateUser(SignUpUserDto signUpUserDto)
+        {
+            //User.Claims
+            var result = await userRepository.UpdateUser(signUpUserDto);
+            if (result == null) return BadRequest();
             if (result.Succeeded)
             {
                 return Ok(result.Succeeded);
