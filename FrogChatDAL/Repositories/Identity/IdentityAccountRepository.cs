@@ -38,8 +38,14 @@ namespace FrogChatDAL.Repositories.Identity
                 Name = signUpUserDto.Name,
                 PhotoUrl = signUpUserDto.PhotoPath,
             };
-            return await userManager.CreateAsync(user, signUpUserDto.Identifier + "FrogChat@");
 
+            var result = await userManager.CreateAsync(user, signUpUserDto.Identifier + "FrogChat@");
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+            await userManager.AddToRoleAsync(await userManager.FindByEmailAsync(user.Email), "User");
+            return result;
         }
 
         public async Task<string> PasswordSignInAsync(SignInDto signInDto)
@@ -49,17 +55,18 @@ namespace FrogChatDAL.Repositories.Identity
             var result = await signInManager.PasswordSignInAsync(user.UserName,
                 signInDto.Identifier + "FrogChat@", signInDto.RememberMe, false);
 
-            if (!result.Succeeded)  return null;
+            if (!result.Succeeded) return null;
 
             var userRoles = await userManager.GetRolesAsync(user);
 
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name , signInDto.Email),
+                new Claim(ClaimTypes.Name , user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
-            foreach(var role in userRoles)
+            foreach (var role in userRoles)
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, role));
             }

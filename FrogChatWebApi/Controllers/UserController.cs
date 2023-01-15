@@ -43,7 +43,7 @@ namespace FrogChatWebApi.Controllers
             return BadRequest(result.Errors);
         }
 
-        [HttpDelete("{userEmail}/roles/{roleName}")]
+        [HttpDelete("{userName}/roles/{roleName}")]
         [Authorize(Roles = "SuperAdmin")]
         public async Task<ActionResult> RemoveUserRole(string userName, string roleName)
         {
