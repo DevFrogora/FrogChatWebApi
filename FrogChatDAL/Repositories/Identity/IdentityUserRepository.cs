@@ -2,6 +2,7 @@
 using FrogChatDAL.DomainModel;
 using FrogChatModel.DomainModel;
 using FrogChatModel.DTOModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

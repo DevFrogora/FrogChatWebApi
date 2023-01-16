@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace FrogChatWebApi.Controllers
 {
@@ -28,14 +29,7 @@ namespace FrogChatWebApi.Controllers
         [HttpGet("Test")]
         public ActionResult Test()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                IEnumerable<Claim> claims = identity.Claims;
-                // or
-                var email = identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-                return Ok(email);
-            }
+
             return NotFound(null);
         }
 
@@ -75,14 +69,21 @@ namespace FrogChatWebApi.Controllers
         [Authorize(Roles = "User")]
         public async Task<ActionResult> UpdateUser(SignUpUserDto signUpUserDto)
         {
-            //User.Claims
-            var result = await userRepository.UpdateUser(signUpUserDto);
-            if (result == null) return BadRequest();
-            if (result.Succeeded)
+            if (signUpUserDto.Email.Split("@gmail.com")[0].Equals(HttpContext.User.Identity.Name))
             {
-                return Ok(result.Succeeded);
+                var result = await userRepository.UpdateUser(signUpUserDto);
+                if (result == null) return BadRequest();
+                if (result.Succeeded)
+                {
+                    return Ok(result.Succeeded);
+                }
+                return BadRequest(result.Errors);
             }
-            return BadRequest(result.Errors);
+            else
+            {
+                return Unauthorized();
+            }
+
         }
 
         [HttpDelete("{userName}")]
