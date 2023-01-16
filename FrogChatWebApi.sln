@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrogChatModel", "FrogChatMo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrogChatService", "FrogChatService\FrogChatService.csproj", "{C545E247-7571-4C4A-82D4-F71CB3522E3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrogChatConsole", "FrogChatConsole\FrogChatConsole.csproj", "{121CD6C6-C77B-4CE0-8B06-3A3018458B4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrogChatConsole", "FrogChatConsole\FrogChatConsole.csproj", "{121CD6C6-C77B-4CE0-8B06-3A3018458B4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrogChatBlazorClient", "FrogChatBlazorClient\FrogChatBlazorClient.csproj", "{9FB521FC-0A3A-4712-8760-1B0C92784D41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{121CD6C6-C77B-4CE0-8B06-3A3018458B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{121CD6C6-C77B-4CE0-8B06-3A3018458B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{121CD6C6-C77B-4CE0-8B06-3A3018458B4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB521FC-0A3A-4712-8760-1B0C92784D41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB521FC-0A3A-4712-8760-1B0C92784D41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB521FC-0A3A-4712-8760-1B0C92784D41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB521FC-0A3A-4712-8760-1B0C92784D41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
