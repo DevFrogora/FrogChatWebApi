@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FrogChatWebApi.Controllers
 {
@@ -43,6 +44,20 @@ namespace FrogChatWebApi.Controllers
         public async Task<ActionResult> UpdateRole(UpdateRoleDto roleDto)
         {
             var result = await roleRepository.UpdateRole(roleDto);
+            if (result.Succeeded)
+            {
+                return Ok(result.Succeeded);
+            }
+            return BadRequest(result.Errors);
+        }
+
+        [HttpDelete("{roleName}")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<ActionResult> DeleteUser(string roleName)
+        {
+            //User.Claims
+            var result = await roleRepository.DeleteRole(roleName);
+            if (result == null) return BadRequest();
             if (result.Succeeded)
             {
                 return Ok(result.Succeeded);

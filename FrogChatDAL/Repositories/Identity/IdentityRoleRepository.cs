@@ -62,5 +62,12 @@ namespace FrogChatDAL.Repositories.Identity
             role.Name = roleDto.Name;
             return await roleManager.UpdateAsync(role);
         }
+
+        public async Task<IdentityResult> DeleteRole(string roleName)
+        {
+            var role = await roleManager.FindByNameAsync(roleName);
+            if (role == null) return null;
+            return await roleManager.DeleteAsync(role);
+        }
     }
 }

@@ -84,6 +84,21 @@ namespace FrogChatWebApi.Controllers
             }
             return BadRequest(result.Errors);
         }
+
+        [HttpDelete("{userName}")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<ActionResult> DeleteUser(string userName)
+        {
+            //User.Claims
+            var result = await userRepository.DeleteUser(userName);
+            if (result == null) return BadRequest();
+            if (result.Succeeded)
+            {
+                return Ok(result.Succeeded);
+            }
+            return BadRequest(result.Errors);
+        }
+
     }
 
 }
