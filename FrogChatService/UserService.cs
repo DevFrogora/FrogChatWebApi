@@ -1,4 +1,5 @@
 ﻿using FrogChatModel.DomainModel;
+using FrogChatModel.DTOModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,9 @@ namespace FrogChatService
             return await httpClient.GetFromJsonAsync<SignUpUserDto>($"api/user/{identifier}") ?? throw new Exception();
         }
 
-        public async Task<IEnumerable<SignUpUserDto>> GetUsersAsync()
+        public async Task<IEnumerable<UserDto>> GetUsersAsync()
         {
-            return await httpClient.GetFromJsonAsync<SignUpUserDto[]>("api/user") ?? throw new Exception();
+            return await httpClient.GetFromJsonAsync<UserDto[]>("api/user") ?? throw new Exception();
             //return  await httpClient.GetFromJsonAsync<List<DTOUser>>("api/user") ?? throw new Exception();
         }
 

@@ -1,0 +1,43 @@
+﻿@page "/profile"
+@using FrogChatModel.DTOModel;
+@using FrogChatService;
+@using ViewModel;
+@inject HttpClient Http
+@inject IUserService userService
+
+<PageTitle>Profile</PageTitle>
+
+<div class="col-12">
+    <input type="text" class="form-control" placeholder="User id" />
+    <br />
+    <input type="text" class="form-control" placeholder="User Name" />
+    <br />
+    <input type="text" class="form-control" placeholder="full name" />
+    <br />
+    <input type="text" class="form-control" placeholder="email address" />
+    <br />
+    <button class="btn btn-primary" @onclick="UpdateProfile">Update Profile</button>
+    <button class="btn btn-primary" @onclick="GetProfile">Get Profile</button>
+    <br />
+    <span> @profileViewModel.updateStatus</span>
+</div>
+@code {
+    private ProfileViewModel profileViewModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private void UpdateProfile()
+    {
+        profileViewModel.updateStatus = "profile updated Successfully";
+    }
+
+    private async Task GetProfile()
+    {
+        var userDtoList = await userService.GetUsersAsync();
+        profileViewModel = userDtoList.ToList<UserDto>()[0];
+    }
+
+}

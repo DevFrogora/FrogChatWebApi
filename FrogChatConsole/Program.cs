@@ -50,7 +50,7 @@ namespace FrogChatConsole
             foreach (var user in await userService.GetUsersAsync())
             {
                 Console.Write(user.Name + " ,");
-                Console.Write(user.Identifier + " ,");
+                //Console.Write(user.Identifier + " ,");
                 Console.WriteLine(user.Email);
             }
             var delUser = await userService.DeleteUserAsync(user1);
@@ -61,7 +61,7 @@ namespace FrogChatConsole
             foreach (var user in await userService.GetUsersAsync())
             {
                 Console.Write(user.Name + " ,");
-                Console.Write(user.Identifier + " ,");
+                //Console.Write(user.Identifier + " ,");
                 Console.WriteLine(user.Email);
             }
         }

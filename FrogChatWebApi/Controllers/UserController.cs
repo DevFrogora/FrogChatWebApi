@@ -35,6 +35,7 @@ namespace FrogChatWebApi.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public  ActionResult GetUsers()
         {
             var users = mapper.Map<IEnumerable<UserDto>>(userRepository.GetUsers());

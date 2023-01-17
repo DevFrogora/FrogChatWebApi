@@ -69,7 +69,18 @@ namespace FrogChatWebApi
             builder.Services.AddScoped<IRoleRepository, IdentityRoleRepository>();
             builder.Services.AddScoped<IUserRepository, IdentityUserRepository>();
 
-
+            const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://localhost:7206").AllowAnyMethod().AllowAnyHeader();
+                                      //builder.WithOrigins("https://devfrogora.github.io");
+                                      //builder.AllowAnyOrigin();
+                                      //builder.AllowAnyMethod().AllowAnyHeader();
+                                  });
+            });
 
             var app = builder.Build();
 
@@ -78,7 +89,7 @@ namespace FrogChatWebApi
             // Configure the HTTP request pipeline.
 
             app.UseHttpsRedirection();
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
             app.UseAuthorization();
 

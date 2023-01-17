@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "FrogChatService": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:60410;http://localhost:60411"
+    }
+  }
+}
