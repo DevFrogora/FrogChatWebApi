@@ -16,7 +16,7 @@ namespace ViewModel
             return new ProfileViewModel
             {
                 UserId = user.Id,
-                UserName = user.Name,
+                UserName = user.Username,
                 Name = user.Name,
                 EmailAddress = user.Email,
                 PhotoUrl = user.PhotoUrl,

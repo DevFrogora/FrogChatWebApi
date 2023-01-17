@@ -8,13 +8,13 @@
 <PageTitle>Profile</PageTitle>
 
 <div class="col-12">
-    <input type="text" class="form-control" placeholder="User id" />
+    <input type="text" @bind-value="@profileViewModel.UserId" class="form-control" placeholder="User id"  disabled/>
     <br />
-    <input type="text" class="form-control" placeholder="User Name" />
+    <input type="text" @bind-value="@profileViewModel.UserName" class="form-control" placeholder="User Name" disabled/>
     <br />
-    <input type="text" class="form-control" placeholder="full name" />
+    <input type="text" @bind-value="@profileViewModel.Name" class="form-control" placeholder="full name" />
     <br />
-    <input type="text" class="form-control" placeholder="email address" />
+    <input type="text" @bind-value="@profileViewModel.EmailAddress" class="form-control" placeholder="email address" disabled/>
     <br />
     <button class="btn btn-primary" @onclick="UpdateProfile">Update Profile</button>
     <button class="btn btn-primary" @onclick="GetProfile">Get Profile</button>
