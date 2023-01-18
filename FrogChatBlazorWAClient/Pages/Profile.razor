@@ -4,6 +4,7 @@
 @using ViewModel;
 @inject HttpClient Http
 @inject IUserService userService
+@inject IProfileViewModel profileViewModel
 
 <PageTitle>Profile</PageTitle>
 
@@ -16,28 +17,14 @@
     <br />
     <input type="text" @bind-value="@profileViewModel.EmailAddress" class="form-control" placeholder="email address" disabled/>
     <br />
-    <button class="btn btn-primary" @onclick="UpdateProfile">Update Profile</button>
-    <button class="btn btn-primary" @onclick="GetProfile">Get Profile</button>
+    <button class="btn btn-primary" @onclick="@profileViewModel.UpdateProfile">Update Profile</button>
+    <button class="btn btn-primary" @onclick="profileViewModel.GetProfile">Get Profile</button>
     <br />
-    <span> @profileViewModel.updateStatus</span>
+    <span> @profileViewModel.profileServiceStatus</span>
 </div>
+
+
 @code {
-    private ProfileViewModel profileViewModel = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-
-    }
-
-    private void UpdateProfile()
-    {
-        profileViewModel.updateStatus = "profile updated Successfully";
-    }
-
-    private async Task GetProfile()
-    {
-        var userDtoList = await userService.GetUsersAsync();
-        profileViewModel = userDtoList.ToList<UserDto>()[0];
-    }
-
+    protected override async Task OnInitializedAsync() { await profileViewModel.GetProfile(); }
 }

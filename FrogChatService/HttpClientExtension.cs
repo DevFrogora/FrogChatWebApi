@@ -13,12 +13,12 @@ namespace FrogChatService
 {
     public static class HttpClientExtension
     {
-        public static async  Task<TValue?> PutJsonAsync<TValue>(this HttpClient client, [StringSyntax("Uri")] string? requestUri, TValue value, JsonSerializerOptions? options = null, CancellationToken cancellationToken = default)
+        public static async  Task<HttpResponseMessage?> PutJsonAsync<TValue>(this HttpClient client, [StringSyntax("Uri")] string? requestUri, TValue value, JsonSerializerOptions? options = null, CancellationToken cancellationToken = default)
         {
-            var response = await client.PutAsJsonAsync<TValue>(requestUri, value, options, cancellationToken);
-            response.EnsureSuccessStatusCode();
+            return await client.PutAsJsonAsync<TValue>(requestUri, value, options, cancellationToken);
+            //response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<TValue>();
+            //return await response.Content.ReadFromJsonAsync<HttpResponseMessage>();
         }
 
         public static async Task<TValue?> PostJsonAsync<TValue>(this HttpClient client, [StringSyntax("Uri")] string? requestUri, TValue value, JsonSerializerOptions? options = null, CancellationToken cancellationToken = default)

@@ -7,7 +7,7 @@ namespace FrogChatService
     {
         Task<IEnumerable<UserDto>> GetUsersAsync();
         Task<SignUpUserDto> GetUserAsync(string identifier);
-        Task<SignUpUserDto> UpdateUserAsync(SignUpUserDto updatedUser);
+        Task<HttpResponseMessage> UpdateUserAsync(UserDto updatedUser);
         Task<SignUpUserDto> AddUserAsync(SignUpUserDto user);
         Task<SignUpUserDto> DeleteUserAsync(SignUpUserDto updatedUser);
     }

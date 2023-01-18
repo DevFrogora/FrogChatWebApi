@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
-using System.Text.Json;
+//using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FrogChatService
@@ -35,9 +35,9 @@ namespace FrogChatService
             return await httpClient.PostJsonAsync<SignUpUserDto>("api/user", updatedUser) ?? throw new Exception();
         }
 
-        public async Task<SignUpUserDto> UpdateUserAsync(SignUpUserDto updatedUser)
+        public async Task<HttpResponseMessage> UpdateUserAsync(UserDto updatedUser)
         {
-            return await httpClient.PutJsonAsync<SignUpUserDto>("api/user", updatedUser) ?? throw new Exception();
+            return await httpClient.PutJsonAsync<UserDto>("api/user", updatedUser) ?? throw new Exception();
         }
 
         public async Task<SignUpUserDto> DeleteUserAsync(SignUpUserDto updatedUser)

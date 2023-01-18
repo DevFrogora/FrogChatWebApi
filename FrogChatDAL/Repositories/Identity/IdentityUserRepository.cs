@@ -28,17 +28,17 @@ namespace FrogChatDAL.Repositories.Identity
             return userManager.Users.ToList();
         }
 
-        public async Task<IdentityResult> UpdateUser(SignUpUserDto signUpUserDto )
+        public async Task<IdentityResult> UpdateUser(UserDto userDto )
         {
-            var user = await  userManager.FindByEmailAsync(signUpUserDto.Email);
+            var user = await  userManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
                 return null;
             }
             else
             {
-                user.Name = signUpUserDto.Name;
-                user.PhotoUrl = signUpUserDto.PhotoPath;
+                user.Name = userDto.Name;
+                user.PhotoUrl = userDto.PhotoUrl;
                 return await userManager.UpdateAsync(user);
             }
         }

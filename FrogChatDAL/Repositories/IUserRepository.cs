@@ -1,5 +1,6 @@
 ﻿using FrogChatDAL.DomainModel;
 using FrogChatModel.DomainModel;
+using FrogChatModel.DTOModel;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace FrogChatDAL.Repositories
     public interface IUserRepository
     {
         IEnumerable<ApplicationUser> GetUsers();
-        Task<IdentityResult> UpdateUser(SignUpUserDto signUpUserDto);
+        Task<IdentityResult> UpdateUser(UserDto signUpUserDto);
         Task<IdentityResult> DeleteUser(string userName);
     }
 }

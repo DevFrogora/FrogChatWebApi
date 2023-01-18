@@ -1,17 +1,61 @@
 ﻿using FrogChatModel.DTOModel;
+using FrogChatService;
 
 namespace ViewModel
 {
-    public class ProfileViewModel
+    public class ProfileViewModel : IProfileViewModel
     {
+        private readonly IUserService userService;
+
         public string UserId { get; set; }
         public string UserName { get; set; }
         public string Name { get; set; }
         public string EmailAddress { get; set; }
         public string PhotoUrl { get; set; }
-        public string updateStatus { get; set; }
+        public string profileServiceStatus { get; set; }
 
-        public static implicit operator ProfileViewModel(UserDto user) {
+        public ProfileViewModel()
+        {
+
+        }
+
+        public ProfileViewModel(IUserService userService)
+        {
+            this.userService = userService;
+        }
+
+        public async Task UpdateProfile()
+        {   UserDto user = this;
+            var update = await userService.UpdateUserAsync(user);
+            if (update.IsSuccessStatusCode)
+            {
+                this.profileServiceStatus = "profile updated Successfully " + update.StatusCode;
+            }
+            else
+            {
+                this.profileServiceStatus = "Not updated : " + update.StatusCode;
+            }
+        }
+
+        public async Task GetProfile()
+        {
+            var userDtoList = await userService.GetUsersAsync();
+            LoadCurrentObject(userDtoList.ToList<UserDto>()[0]);
+            this.profileServiceStatus = "profile Get Successfully";
+        }
+
+
+        private void LoadCurrentObject(ProfileViewModel profileViewModel)
+        {
+            this.UserId = profileViewModel.UserId;
+            this.UserName = profileViewModel.UserName;
+            this.Name = profileViewModel.Name;
+            this.EmailAddress = profileViewModel.EmailAddress;
+            this.PhotoUrl = profileViewModel.PhotoUrl;
+        }
+
+        public static implicit operator ProfileViewModel(UserDto user)
+        {
 
             return new ProfileViewModel
             {

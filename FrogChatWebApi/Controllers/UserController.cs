@@ -67,23 +67,25 @@ namespace FrogChatWebApi.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "User")]
-        public async Task<ActionResult> UpdateUser(SignUpUserDto signUpUserDto)
+        //[Authorize(Roles = "User")]
+        [AllowAnonymous]
+        public async Task<ActionResult> UpdateUser(UserDto userDto)
         {
-            if (signUpUserDto.Email.Split("@gmail.com")[0].Equals(HttpContext.User.Identity.Name))
-            {
-                var result = await userRepository.UpdateUser(signUpUserDto);
+            //if (signUpUserDto.Email.Split("@gmail.com")[0].Equals(HttpContext.User.Identity.Name))
+            //{
+                var result = await userRepository.UpdateUser(userDto);
                 if (result == null) return BadRequest();
                 if (result.Succeeded)
                 {
                     return Ok(result.Succeeded);
                 }
                 return BadRequest(result.Errors);
-            }
-            else
-            {
-                return Unauthorized();
-            }
+            //    return BadRequest(result.Errors);
+            //}
+            //else
+            //{
+            //    return Unauthorized();
+            //}
 
         }
 
