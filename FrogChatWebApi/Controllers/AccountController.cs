@@ -40,55 +40,15 @@ namespace FrogChatWebApi.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<ActionResult> SignIn(SignInDto signInDto)
+        public async Task<ActionResult<string>> SignIn(SignInDto signInDto)
         {
-            var result = await accountRepository.PasswordSignInAsync(signInDto);
-            if (string.IsNullOrEmpty(result))
+            var token = await accountRepository.PasswordSignInAsync(signInDto);
+            if (string.IsNullOrEmpty(token))
             {
                 return Unauthorized();
             }
-            return Ok(result);
+            return Ok(token);
         }
-
-
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> LoginAsync(SignInDto signInDto)
-        {
-            var result = await accountRepository.PasswordSignInAsync(signInDto);
-            if (string.IsNullOrEmpty(result))
-            {
-
-                return BadRequest("Invalid Credentials");
-            }
-
-            var claims = new List<Claim>
-            {
-                new Claim("Identifier", signInDto.Identifier.ToString()),
-                new Claim(ClaimTypes.Email, signInDto.Email)
-            };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var authProperties = new AuthenticationProperties();
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-            return Ok("Success");
-        }
-
-        [Route("logout")]
-        public async Task<IActionResult> LogoutAsync()
-        {
-            await HttpContext.SignOutAsync();
-            return Ok("success");
-        }
-
-
-
 
 
         [HttpGet("google-login")]
@@ -104,7 +64,7 @@ namespace FrogChatWebApi.Controllers
 
         [HttpGet]
         [Route("google-login-callback")]
-        public async Task<IActionResult> GoogleLoginCallBack(string returnURL)
+        public async Task<ActionResult> GoogleLoginCallBack(string returnURL)
         {
             var authenticationResult = await HttpContext
             .AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
@@ -125,53 +85,45 @@ namespace FrogChatWebApi.Controllers
                 .Select(_ => _.Value)
                 .FirstOrDefault();
 
-                var user = await ManageExternalLoginUser(
-                    new SignUpUserDto()
-                    {
-                        Email = email,
-                        Name = $"{firstName} {lastName}"
-                    }
-                );
 
-                await RefreshExternalSignIn(user);
-                return Redirect($"{returnURL}?externalauth=true");
+                var signup = new SignUpUserDto()
+                {
+                    Email = email,
+                    Name = $"{firstName} {lastName}"
+                };
+                var user = await ManageExternalLoginUser(
+                    signup
+                );
+                SignInDto signInDto = new SignInDto()
+                {
+                    Email = email,
+                    Identifier = $"{firstName} {lastName}"
+                };
+
+                var token = await SignIn(signInDto);
+                if(token is UnauthorizedResult)
+                {
+                    return Redirect($"{returnURL}?access_token=UnAuthenticated");
+                }
+                else
+                {
+                    return Redirect($"{returnURL}?access_token={token.Value}");
+                }
             }
-            return Redirect($"{returnURL}?externalauth=false");
+            return Redirect($"{returnURL}?access_token=UnAuthenticated");
         }
 
         private async Task<UserDto> ManageExternalLoginUser(SignUpUserDto signUpUserDto)
         {
             var foundUser = await userRepository.GetUser(signUpUserDto.Email.Split("@gmail.com")[0]);
-            var user = mapper.Map<UserDto>(foundUser);
-            if (user != null)
+            if (foundUser != null)
             {
+                var user = mapper.Map<UserDto>(foundUser);
                 return user;
             }
-            await accountRepository.CreateUserAsync(signUpUserDto);
-            return user;
+            await Signup(signUpUserDto);
+            return mapper.Map<UserDto>(signUpUserDto);
         }
 
-        private async Task RefreshExternalSignIn(UserDto user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Email, user.Email)
-            };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var authProperties = new AuthenticationProperties();
-
-            HttpContext.User.AddIdentity(claimsIdentity);
-
-            await HttpContext.SignOutAsync();
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-        }
     }
 }

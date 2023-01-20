@@ -27,7 +27,7 @@ namespace FrogChatBlazorWAClient
                 new Claim(ClaimTypes.Email , user.Email),
                 new Claim("userid" , user.Id)
 
-            },"CookieAuth");
+            }, "bearer");
             claimsPrincipal = new ClaimsPrincipal(identity);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }

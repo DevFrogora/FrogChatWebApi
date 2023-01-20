@@ -36,8 +36,6 @@
 
     private async void GoogleLogin()
     {
-        navigationManager.NavigateTo("https://localhost:44305/api/user/google-login?returnURL=https://localhost:7206",true);
-        // if logged in then refresh the page or naviagte to root url
-        await localStorage.SetItemAsStringAsync("isAuthenticated", "true");
+        navigationManager.NavigateTo("https://localhost:44305/api/user/google-login?returnURL=https://localhost:7206/GoogleAuth", true);
     }
 }

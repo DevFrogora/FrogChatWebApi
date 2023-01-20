@@ -1,0 +1,28 @@
+﻿ines (21 sloc)  869 Bytes
+
+@page "/GoogleAuth"
+
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager navigationManager
+@inject ILocalStorageService localStorageService
+
+<h1>Please wait...</h1>
+<h3> Access Token : @AccessToken</h3>
+
+@code {
+
+    private Uri uri;
+    public string AccessToken { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("access_token", out var _accessToken))
+        {
+            AccessToken = _accessToken;
+
+            await localStorageService.SetItemAsync<string>("Token", _accessToken);
+
+            navigationManager.NavigateTo("/", true);
+        }
+    }
+}

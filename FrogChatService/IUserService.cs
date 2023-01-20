@@ -10,5 +10,6 @@ namespace FrogChatService
         Task<HttpResponseMessage> UpdateUserAsync(UserDto updatedUser);
         Task<SignUpUserDto> AddUserAsync(SignUpUserDto user);
         Task<SignUpUserDto> DeleteUserAsync(SignUpUserDto updatedUser);
+        Task<UserDto> GetUserProfileAsync();
     }
 }

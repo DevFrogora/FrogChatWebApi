@@ -24,25 +24,19 @@
     private async Task GetAuthentication(NavigationContext context)
     {
         var token = await localStorage.GetItemAsStringAsync("Token");
-        if (string.IsNullOrEmpty(token) && context.Path.ToLower().Contains("Token=sadasd"))
+        if (!string.IsNullOrEmpty(token))
         {
-            token = "sdasda";
-            await localStorage.SetItemAsStringAsync("Token",token);
-        }
-        CustomAuthenticationStateProvider customAuthenticationStateProvider =
-        (_authStateProvider as CustomAuthenticationStateProvider);
-        var user = (await customAuthenticationStateProvider.
-            GetAuthenticationStateAsync()).User;
+            CustomAuthenticationStateProvider customAuthenticationStateProvider =
+            (_authStateProvider as CustomAuthenticationStateProvider);
+            var user = (await customAuthenticationStateProvider.
+                GetAuthenticationStateAsync()).User;
 
-        if (!string.IsNullOrEmpty(token) && !user.Identity.IsAuthenticated)
-        {
-            //var response = await userService.GetUserProfile()
-            //if(response == "success")
-            customAuthenticationStateProvider
-            .SetAuthInfo(new FrogChatModel.DTOModel.UserDto());
-        //else{
-        //        await localStorage.RemoveItemAsync("isAuthenticated");
-        //    }
+            if (!user.Identity.IsAuthenticated)
+            {
+                var response = await userService.GetUserProfileAsync();
+                customAuthenticationStateProvider
+                .SetAuthInfo(response);
+            }
         }
 
     }

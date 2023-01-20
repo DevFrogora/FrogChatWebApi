@@ -19,6 +19,11 @@ namespace FrogChatService
             this.httpClient = httpClient;
         }
 
+        public async Task<UserDto> GetUserProfileAsync()
+        {
+            return await httpClient.GetFromJsonAsync<UserDto>($"api/user/user-profile") ?? throw new Exception();
+        }
+
         public async Task<SignUpUserDto> GetUserAsync(string identifier)
         {
             return await httpClient.GetFromJsonAsync<SignUpUserDto>($"api/user/{identifier}") ?? throw new Exception();
