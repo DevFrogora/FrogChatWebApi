@@ -48,7 +48,7 @@ namespace FrogChatWebApi
                 options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
             }).AddCookie(opt =>
             {
-                opt.Cookie.Name = "TryingoutGoogleOauth";
+                //opt.Cookie.Name = "TryingoutGoogleOauth";
                 //opt.LoginPath = "/auth/google-login";
             })
                 .AddJwtBearer(options =>
@@ -97,7 +97,7 @@ namespace FrogChatWebApi
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("https://localhost:7206").AllowAnyMethod().AllowAnyHeader();
+                                      builder.WithOrigins("https://localhost:7206").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
                                       //builder.WithOrigins("https://devfrogora.github.io");
                                       //builder.AllowAnyOrigin();
                                       //builder.AllowAnyMethod().AllowAnyHeader();

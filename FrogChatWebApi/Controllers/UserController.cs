@@ -4,6 +4,7 @@ using FrogChatModel.DomainModel;
 using FrogChatModel.DTOModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace FrogChatWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : ControllerBase
     {
         private readonly IRoleRepository roleRepository;
@@ -29,7 +30,6 @@ namespace FrogChatWebApi.Controllers
             this.mapper = mapper;
         }
 
-        [Authorize]
         [HttpGet]
         [Route("user-profile")]
         public async Task<ActionResult> UserProfileAsync()
@@ -47,22 +47,22 @@ namespace FrogChatWebApi.Controllers
 
 
 
-        [HttpGet("GetCurrentUser")]
+        [HttpGet("test")]
         [AllowAnonymous]
-        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        public async Task<ActionResult<Dictionary<string, string>>> GetCurrentUser()
         {
-            //Dictionary<string, string> claims = new Dictionary<string, string>();
-            //foreach (var item in HttpContext.User.Claims)
-            //{
-            //    claims.Add(item.Type, item.Value);
-            //}
-            //return Ok(claims);
-            UserDto user = new();
-            if (User.Identity.IsAuthenticated)
+            Dictionary<string, string> claims = new Dictionary<string, string>();
+            foreach (var item in HttpContext.User.Claims)
             {
-                user.Email = (User.FindFirstValue(User.Identity.Name));
+                claims.Add(item.Type, item.Value);
             }
-            return await Task.FromResult(user);
+            //return Ok(claims);
+            //UserDto user = new();
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    user.Email = (User.FindFirstValue(User.Identity.Name));
+            //}
+            return await Task.FromResult(claims);
         }
 
 

@@ -14,6 +14,8 @@ namespace FrogChatModel.DTOModel
         public string Name { get; set; }
         public string Email { get; set; }
         public string PhotoUrl { get; set; }
+        
+        //public string Identifier { get; set; }
         //public string 
 
         public static implicit operator UserDto(SignUpUserDto user)

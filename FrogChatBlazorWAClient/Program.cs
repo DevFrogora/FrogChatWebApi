@@ -14,8 +14,8 @@ builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 
-builder.Services.AddTransient(sp =>
-    new HttpClient { BaseAddress = new Uri(@"https://localhost:44305/") });
+//builder.Services.AddTransient(sp =>
+//    new HttpClient { BaseAddress = new Uri(@"https://localhost:44305/") });
 //builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(@"https://localhost:44305/") });
 builder.Services.AddHttpClient<IUserService, UserService>(client =>
 {

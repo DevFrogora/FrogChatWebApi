@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace FrogChatWebApi.Controllers
 {
@@ -84,6 +85,11 @@ namespace FrogChatWebApi.Controllers
                 .Select(_ => _.Value)
                 .FirstOrDefault();
 
+                string identifier = HttpContext
+                .User.Claims.Where(_ => _.Type == ClaimTypes.NameIdentifier)
+                .Select(_ => _.Value)
+                .FirstOrDefault();
+
 
                 var signup = new SignUpUserDto()
                 {
@@ -96,17 +102,18 @@ namespace FrogChatWebApi.Controllers
                 SignInDto signInDto = new SignInDto()
                 {
                     Email = email,
-                    Identifier = $"{firstName} {lastName}"
+                    Identifier = identifier
                 };
 
                 var token = await SignIn(signInDto);
-                if(token is UnauthorizedResult)
+                if (token is UnauthorizedResult)
                 {
                     return Redirect($"{returnURL}?access_token=UnAuthenticated");
                 }
                 else
                 {
-                    return Redirect($"{returnURL}?access_token={token.Value}");
+                    var result3 = (OkObjectResult)token.Result;
+                    return Redirect($"{returnURL}?access_token={result3.Value}");
                 }
             }
             return Redirect($"{returnURL}?access_token=UnAuthenticated");
