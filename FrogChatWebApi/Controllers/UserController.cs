@@ -32,16 +32,17 @@ namespace FrogChatWebApi.Controllers
 
         [HttpGet]
         [Route("user-profile")]
-        public async Task<ActionResult> UserProfileAsync()
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<UserDto>> UserProfileAsync()
         {
             string userEmail = HttpContext.User.Claims
             .Where(_ => _.Type == ClaimTypes.Email)
             .Select(_ => (_.Value))
             .First();
 
-            var userProfile = await userRepository.GetUser(userEmail);
-
-            return Ok(mapper.Map<UserDto>(userProfile));
+            var userProfile = await userRepository.GetUser(userEmail.Split("@gmail.com")[0]);
+            var user = mapper.Map<UserDto>(userProfile);
+            return Ok(user);
         }
 
 

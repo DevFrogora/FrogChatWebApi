@@ -3,6 +3,7 @@ using FrogChatModel.DTOModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 //using System.Text.Json;
@@ -17,6 +18,8 @@ namespace FrogChatService
         public UserService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
+            //httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {user.AccessToken}");
+
         }
 
         public async Task<UserDto> GetUserProfileAsync()

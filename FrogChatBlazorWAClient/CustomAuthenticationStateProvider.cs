@@ -8,11 +8,10 @@ namespace FrogChatBlazorWAClient
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private readonly HttpClient httpClient;
         private ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(new ClaimsPrincipal(new ClaimsIdentity()));
-        public CustomAuthenticationStateProvider(HttpClient httpClient)
+        public CustomAuthenticationStateProvider()
         {
-            this.httpClient = httpClient;
+
         }
 
         public async override  Task<AuthenticationState> GetAuthenticationStateAsync()

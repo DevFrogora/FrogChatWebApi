@@ -1,20 +1,14 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
-
+using System.Net.Http.Headers;
 namespace FrogChatBlazorWAClient
 {
     public class JwtTokenHandler : DelegatingHandler
     {
-        [Inject]
-        protected  ILocalStorageService localStorage { get; set; }
+        private readonly ILocalStorageService localStorage;
 
-        public JwtTokenHandler()
-        {
-
-        }
-
-        public JwtTokenHandler(ILocalStorageService localStorage)
+        public JwtTokenHandler(ILocalStorageService localStorage) 
         {
             this.localStorage = localStorage;
         }

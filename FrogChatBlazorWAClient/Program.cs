@@ -17,16 +17,17 @@ builder.Services.AddBlazoredLocalStorage();
 //builder.Services.AddTransient(sp =>
 //    new HttpClient { BaseAddress = new Uri(@"https://localhost:44305/") });
 //builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(@"https://localhost:44305/") });
-builder.Services.AddHttpClient<IUserService, UserService>(client =>
+builder.Services.AddScoped<JwtTokenHandler>();
+builder.Services.AddHttpClient<IUserService, UserService>(client=>
 {
     client.BaseAddress = new Uri(@"https://localhost:44305/");
+    
 }).AddHttpMessageHandler<JwtTokenHandler>();
 
 
 builder.Services.AddSingleton<IProfileViewModel,ProfileViewModel>();
 builder.Services.AddSingleton<IContactsViewModel, ContactsViewModel>();
-builder.Services.AddScoped<JwtTokenHandler>();
-builder.Services.AddScoped<AuthenticationStateProvider,CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 
 
