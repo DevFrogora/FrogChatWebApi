@@ -50,15 +50,14 @@ namespace FrogChatWebApi.Controllers
             return Ok(token);
         }
 
-
-        [HttpGet("google-login")]
         [AllowAnonymous]
-        public async Task GoogleSignIn(string returnUrl)
+        [HttpGet("google-login")]
+        public async Task GoogleSignIn( string returnURL)
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
                 new AuthenticationProperties
                 {
-                    RedirectUri = Url.Action(nameof(GoogleLoginCallBack), new { returnUrl })
+                    RedirectUri = Url.Action(nameof(GoogleLoginCallBack), new { returnURL })
                 });
         }  //https://localhost:7206/
 
