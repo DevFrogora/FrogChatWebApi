@@ -1,12 +1,49 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿@using FrogChatService;
+
+@inject IUserService userService
+@inject AuthenticationStateProvider _authStateProvider
+@inject ILocalStorageService localStorage;
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="@GetAuthentication">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+
+</CascadingAuthenticationState>
+
+@code{
+    private async Task GetAuthentication(NavigationContext context)
+    {
+        var token = await localStorage.GetItemAsStringAsync("Token");
+        if (string.IsNullOrEmpty(token) && context.Path.ToLower().Contains("Token=sadasd"))
+        {
+            token = "sdasda";
+            await localStorage.SetItemAsStringAsync("Token",token);
+        }
+        CustomAuthenticationStateProvider customAuthenticationStateProvider =
+        (_authStateProvider as CustomAuthenticationStateProvider);
+        var user = (await customAuthenticationStateProvider.
+            GetAuthenticationStateAsync()).User;
+
+        if (!string.IsNullOrEmpty(token) && !user.Identity.IsAuthenticated)
+        {
+            //var response = await userService.GetUserProfile()
+            //if(response == "success")
+            customAuthenticationStateProvider
+            .SetAuthInfo(new FrogChatModel.DTOModel.UserDto());
+        //else{
+        //        await localStorage.RemoveItemAsync("isAuthenticated");
+        //    }
+        }
+
+    }
+}

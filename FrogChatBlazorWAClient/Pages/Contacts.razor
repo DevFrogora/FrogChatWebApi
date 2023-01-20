@@ -1,18 +1,43 @@
 ﻿@page "/contacts"
+@using ViewModel;
+@inject IContactsViewModel contactViewModel
+@inject NavigationManager navigationManager
+@inject ILocalStorageService localStorage;
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Contact</PageTitle>
 
-<h1>Counter</h1>
-
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-
-@code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+<div class="col-12">
+    @if (contactViewModel.Contacts != null && contactViewModel.Contacts.Count() > 0)
     {
-        currentCount++;
+        @foreach (var contact in contactViewModel.Contacts)
+        {
+            <a href="/chat/@contact.Name" class="list-group-item list-group-item-action flex-column align-items-start">@contact.Name</a>
+        }
+
+    }
+    <button @onclick="GoogleLogin">googleAUth </button>
+@*<AuthorizeView>
+    <Authorized>
+        Welcome to your new app.
+        @foreach(var item in context.User.Claims)
+        {
+            <h2>@item.Type = @item.Value</h2>
+        }
+        <img src="@context.User.Claims.Where(s=> s.Type == "picture").FirstOrDefault().Value"/>
+    </Authorized>
+    <NotAuthorized>
+        <a href="auth/google-login" class="btn btn-secondary"> Login</a>
+    </NotAuthorized>
+</AuthorizeView>*@
+</div>
+
+@code{
+    protected override async Task OnInitializedAsync() => await contactViewModel.GetContacts();
+
+    private async void GoogleLogin()
+    {
+        navigationManager.NavigateTo("https://localhost:44305/api/user/google-login?returnURL=https://localhost:7206",true);
+        // if logged in then refresh the page or naviagte to root url
+        await localStorage.SetItemAsStringAsync("isAuthenticated", "true");
     }
 }

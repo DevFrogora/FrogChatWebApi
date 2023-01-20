@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrogChatConsole", "FrogChat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrogChatBlazorWAClient", "FrogChatBlazorWAClient\FrogChatBlazorWAClient.csproj", "{7F9B46D5-FE77-4CC3-81D9-C5411CB50407}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{4530ABE6-5F86-4941-B0CB-9E421728E85B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{4530ABE6-5F86-4941-B0CB-9E421728E85B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

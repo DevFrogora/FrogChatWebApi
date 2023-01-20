@@ -27,6 +27,10 @@ namespace FrogChatDAL.Repositories.Identity
         {
             return userManager.Users.ToList();
         }
+        public async Task<ApplicationUser> GetUser(string username)
+        {
+            return await userManager.FindByNameAsync(username);
+        }
 
         public async Task<IdentityResult> UpdateUser(UserDto userDto )
         {

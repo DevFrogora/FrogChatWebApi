@@ -9,6 +9,7 @@
       "FrogChatWebApi/1.0.0": {
         "dependencies": {
           "FrogChatDAL": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.Google": "7.0.2",
           "Microsoft.EntityFrameworkCore.Design": "7.0.1"
         },
         "runtime": {
@@ -108,6 +109,14 @@
           "Microsoft.AspNetCore.Authentication.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Http": "2.2.0",
           "Microsoft.AspNetCore.Http.Extensions": "2.2.0"
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.Google/7.0.2": {
+        "runtime": {
+          "lib/net7.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+            "assemblyVersion": "7.0.2.0",
+            "fileVersion": "7.0.222.60606"
+          }
         }
       },
       "Microsoft.AspNetCore.Authentication.JwtBearer/7.0.2": {
@@ -926,6 +935,13 @@
       "sha512": "sha512-XlVJzJ5wPOYW+Y0J6Q/LVTEyfS4ssLXmt60T0SPP+D8abVhBTl+cgw2gDHlyKYIkcJg7btMVh383NDkMVqD/fg==",
       "path": "microsoft.aspnetcore.authentication.core/2.2.0",
       "hashPath": "microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.Google/7.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hy75fIrN83ElrgnsbX5OjFUBOm0ySPqYYHm1GuZ+KfW+V2MlDJ3zDqflAUe1stv780k/EgNsmBH1J+xuQhEtEg==",
+      "path": "microsoft.aspnetcore.authentication.google/7.0.2",
+      "hashPath": "microsoft.aspnetcore.authentication.google.7.0.2.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/7.0.2": {
       "type": "package",

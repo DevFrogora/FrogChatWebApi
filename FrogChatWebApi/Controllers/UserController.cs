@@ -2,6 +2,8 @@
 using FrogChatDAL.Repositories;
 using FrogChatModel.DomainModel;
 using FrogChatModel.DTOModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,25 +20,55 @@ namespace FrogChatWebApi.Controllers
         private readonly IRoleRepository roleRepository;
         private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
+        private readonly HttpClient httpClient;
 
-        public UserController(IRoleRepository roleRepository,IUserRepository userRepository,IMapper mapper)
+        public UserController(IRoleRepository roleRepository, IUserRepository userRepository, IMapper mapper)
         {
             this.roleRepository = roleRepository;
             this.userRepository = userRepository;
             this.mapper = mapper;
         }
 
-        [HttpGet("Test")]
-        public ActionResult Test()
+        [Authorize]
+        [HttpGet]
+        [Route("user-profile")]
+        public async Task<IActionResult> UserProfileAsync()
         {
+            string userEmail = HttpContext.User.Claims
+            .Where(_ => _.Type == ClaimTypes.Email)
+            .Select(_ => (_.Value))
+            .First();
 
-            return NotFound(null);
+            var userProfile = await userRepository.GetUser(userEmail);
+
+            return Ok(userProfile);
+        }
+
+
+
+
+        [HttpGet("GetCurrentUser")]
+        [AllowAnonymous]
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+            //Dictionary<string, string> claims = new Dictionary<string, string>();
+            //foreach (var item in HttpContext.User.Claims)
+            //{
+            //    claims.Add(item.Type, item.Value);
+            //}
+            //return Ok(claims);
+            UserDto user = new();
+            if (User.Identity.IsAuthenticated)
+            {
+                user.Email = (User.FindFirstValue(User.Identity.Name));
+            }
+            return await Task.FromResult(user);
         }
 
 
         [HttpGet]
         [AllowAnonymous]
-        public  ActionResult GetUsers()
+        public ActionResult GetUsers()
         {
             var users = mapper.Map<IEnumerable<UserDto>>(userRepository.GetUsers());
             return Ok(users);
@@ -73,13 +105,13 @@ namespace FrogChatWebApi.Controllers
         {
             //if (signUpUserDto.Email.Split("@gmail.com")[0].Equals(HttpContext.User.Identity.Name))
             //{
-                var result = await userRepository.UpdateUser(userDto);
-                if (result == null) return BadRequest();
-                if (result.Succeeded)
-                {
-                    return Ok(result.Succeeded);
-                }
-                return BadRequest(result.Errors);
+            var result = await userRepository.UpdateUser(userDto);
+            if (result == null) return BadRequest();
+            if (result.Succeeded)
+            {
+                return Ok(result.Succeeded);
+            }
+            return BadRequest(result.Errors);
             //    return BadRequest(result.Errors);
             //}
             //else

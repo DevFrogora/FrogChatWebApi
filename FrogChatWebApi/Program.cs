@@ -5,12 +5,15 @@ using FrogChatDAL.Repositories.Identity;
 //using FrogChatDAL.Repositories.EF;
 using FrogChatDAL.Repositories.InMemory;
 using FrogChatModel;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace FrogChatWebApi
@@ -20,6 +23,7 @@ namespace FrogChatWebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            ConfigurationManager? configuration = builder.Configuration;
 
             // Add services to the container.
 
@@ -39,10 +43,15 @@ namespace FrogChatWebApi
 
             builder.Services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+            }).AddCookie(opt =>
+            {
+                opt.Cookie.Name = "TryingoutGoogleOauth";
+                //opt.LoginPath = "/auth/google-login";
+            })
+                .AddJwtBearer(options =>
             {
                 // it will check token is present or not
                 options.SaveToken = true;
@@ -57,6 +66,19 @@ namespace FrogChatWebApi
                     ValidIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer"),
                     ValidAudience = builder.Configuration.GetValue<string>("Jwt:Audience"),
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Jwt:key")))
+                };
+            }).AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = configuration.GetValue<string>("Authentication:Google:ClientId");
+                googleOptions.ClientSecret = configuration.GetValue<string>("Authentication:Google:ClientSecret");
+
+                googleOptions.Scope.Add("profile");
+                googleOptions.Events.OnCreatingTicket = context =>
+                {
+                    string pictureUri = context.User.GetProperty("picture").GetString();
+                    context.Identity.AddClaim(new Claim("picture", pictureUri));
+
+                    return Task.CompletedTask;
                 };
             });
 

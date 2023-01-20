@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrogChatModel.DomainModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,17 @@ namespace FrogChatModel.DTOModel
         public string Email { get; set; }
         public string PhotoUrl { get; set; }
         //public string 
+
+        public static implicit operator UserDto(SignUpUserDto user)
+        {
+
+            return new UserDto
+            {
+                Name = user.Name,
+                Email = user.Email,
+                PhotoUrl = user.PhotoPath,
+            };
+        }
 
     }
 }

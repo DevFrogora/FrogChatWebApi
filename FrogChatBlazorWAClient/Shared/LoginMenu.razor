@@ -1,0 +1,34 @@
+﻿@inject ILocalStorageService localstorage
+
+        <AuthorizeView>
+            <Authorized>
+                <div class="top-row px-4">
+            @*<a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>*@
+                    <h4><b> @context.User.Identity.Name </b></h4>
+                    <button class="btn btn-danger" @onclick="LogOut">LogOut</button>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <div class="top-row px-4">
+            @*<a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>*@
+            @*<h4><b> Email Address </b></h4>*@
+                    <button class="btn btn-Primary" @onclick="LogIn">LogIn</button>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
+
+@code {
+    private async void LogOut()
+    {
+        //var response = ();
+        //if(response == "success")
+        //{
+        //    await localstorage.RemoveItemAsync("isAuthenticated");
+        //    // then reload the page with navigationManager
+        //}
+    }
+    private void LogIn()
+    {
+
+    }
+}

@@ -13,6 +13,7 @@ namespace FrogChatDAL.Repositories
     public interface IUserRepository
     {
         IEnumerable<ApplicationUser> GetUsers();
+        Task<ApplicationUser> GetUser(string username);
         Task<IdentityResult> UpdateUser(UserDto signUpUserDto);
         Task<IdentityResult> DeleteUser(string userName);
     }
