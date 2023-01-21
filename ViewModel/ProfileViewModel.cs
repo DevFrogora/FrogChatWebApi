@@ -22,6 +22,7 @@ namespace ViewModel
         public ProfileViewModel(IUserService userService)
         {
             this.userService = userService;
+
         }
 
         public async Task UpdateProfile()
@@ -30,17 +31,21 @@ namespace ViewModel
             if (update.IsSuccessStatusCode)
             {
                 this.profileServiceStatus = "profile updated Successfully " + update.StatusCode;
+                userDto = this;
             }
             else
             {
                 this.profileServiceStatus = "Not updated : " + update.StatusCode;
             }
         }
-
+        UserDto userDto;
         public async Task GetProfile()
         {
-            var userDtoList = await userService.GetUsersAsync();
-            LoadCurrentObject(userDtoList.ToList<UserDto>()[0]);
+            if (userDto == null)
+            {
+               userDto = await userService.GetUserProfileAsync();
+            }
+            LoadCurrentObject(userDto);
             this.profileServiceStatus = "profile Get Successfully";
         }
 

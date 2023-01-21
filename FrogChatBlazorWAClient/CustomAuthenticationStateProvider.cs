@@ -24,7 +24,7 @@ namespace FrogChatBlazorWAClient
             var identity = new ClaimsIdentity(new []{
                 new Claim(ClaimTypes.Name , user.Name),
                 new Claim(ClaimTypes.Email , user.Email),
-                new Claim("userid" , user.Id)
+                new Claim("picture" , user.PhotoUrl)
 
             }, "bearer");
             claimsPrincipal = new ClaimsPrincipal(identity);

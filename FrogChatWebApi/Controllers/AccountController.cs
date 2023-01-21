@@ -75,13 +75,8 @@ namespace FrogChatWebApi.Controllers
                 .Select(_ => _.Value)
                 .FirstOrDefault();
 
-                string firstName = HttpContext
-                .User.Claims.Where(_ => _.Type == ClaimTypes.GivenName)
-                .Select(_ => _.Value)
-                .FirstOrDefault();
-
-                string lastName = HttpContext
-                .User.Claims.Where(_ => _.Type == ClaimTypes.Surname)
+                string Name = HttpContext
+                .User.Claims.Where(_ => _.Type == ClaimTypes.Name)
                 .Select(_ => _.Value)
                 .FirstOrDefault();
 
@@ -90,11 +85,17 @@ namespace FrogChatWebApi.Controllers
                 .Select(_ => _.Value)
                 .FirstOrDefault();
 
+                string picture = HttpContext
+                .User.Claims.Where(_ => _.Type == "picture")
+                .Select(_ => _.Value)
+                .FirstOrDefault();
 
                 var signup = new SignUpUserDto()
                 {
+                    Identifier = identifier,
                     Email = email,
-                    Name = $"{firstName} {lastName}"
+                    Name = Name,
+                    PhotoPath = picture
                 };
                 var user = await ManageExternalLoginUser(
                     signup

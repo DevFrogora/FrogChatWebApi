@@ -1,6 +1,7 @@
 ﻿@page "/profile"
 @using FrogChatModel.DTOModel;
 @using FrogChatService;
+@using System.Security.Claims;
 @using ViewModel;
 @inject HttpClient Http
 @inject IUserService userService
@@ -9,18 +10,62 @@
 <PageTitle>Profile</PageTitle>
 
 <div class="col-12">
-    <input type="text" @bind-value="@profileViewModel.UserId" class="form-control" placeholder="User id"  disabled/>
+    <input type="text" @bind-value="@profileViewModel.UserId" class="form-control" placeholder="User id" disabled />
     <br />
-    <input type="text" @bind-value="@profileViewModel.UserName" class="form-control" placeholder="User Name" disabled/>
+    <input type="text" @bind-value="@profileViewModel.UserName" class="form-control" placeholder="User Name" disabled />
     <br />
     <input type="text" @bind-value="@profileViewModel.Name" class="form-control" placeholder="full name" />
     <br />
-    <input type="text" @bind-value="@profileViewModel.EmailAddress" class="form-control" placeholder="email address" disabled/>
+    <input type="text" @bind-value="@profileViewModel.EmailAddress" class="form-control" placeholder="email address" disabled />
     <br />
     <button class="btn btn-primary" @onclick="@profileViewModel.UpdateProfile">Update Profile</button>
     <button class="btn btn-primary" @onclick="profileViewModel.GetProfile">Get Profile</button>
     <br />
     <span> @profileViewModel.profileServiceStatus</span>
+    <br />
+    <AuthorizeView>
+        <Authorized>
+            @context.User.Identity.Name;
+            Email  : @context.User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault()
+            
+@*
+            Name : @{
+                context
+                .User.Claims.Where(claim => claim.Type == ClaimTypes.Name)
+                .Select(claim => claim.Value)
+                .FirstOrDefault().ToString();
+            }
+
+
+            Picture : @{
+                context
+                .User.Claims.Where(claim => claim.Type == "picture")
+                .Select(claim => claim.Value)
+                .FirstOrDefault().ToString();
+            }*@
+            @foreach (var claim in context.User.Claims)
+            {
+                <tr>
+                    @if(claim.Type == ClaimTypes.Email)
+                    {
+                        <td>  email : @claim.Value</td>
+                    }
+                    @if (claim.Type == ClaimTypes.Name)
+                    {
+                        <td> Name: @claim.Value</td>
+                    }
+
+                    @if (claim.Type == "picture")
+                    {
+                        <td> picture:@claim.Value</td>
+                    }
+    @*                <td>@claim.Type</td>
+                    <td>@claim.Value</td>*@
+                </tr>
+            }
+
+        </Authorized>
+    </AuthorizeView>
 </div>
 
 
