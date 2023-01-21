@@ -113,10 +113,11 @@ namespace FrogChatWebApi
             app.UseHttpsRedirection();
             app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
+
+            app.MapControllers();
             app.UseAuthorization();
 
 
-            app.MapControllers();
 
             app.Run();
         }

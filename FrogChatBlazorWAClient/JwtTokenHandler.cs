@@ -14,7 +14,7 @@ namespace FrogChatBlazorWAClient
         }
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Add("Authorization", $"Bearer {await localStorage.GetItemAsStringAsync("Token")}");
+            request.Headers.Add("Authorization", $"Bearer {await localStorage.GetItemAsync<string>("Token")}");
             return await base.SendAsync(request, cancellationToken);
         }
 
