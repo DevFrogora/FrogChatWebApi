@@ -20,7 +20,7 @@
         {
             AccessToken = _accessToken;
 
-            await localStorageService.SetItemAsync("Token", _accessToken);
+            await localStorageService.SetItemAsStringAsync("Token", _accessToken);
 
             navigationManager.NavigateTo("/", true);
         }
