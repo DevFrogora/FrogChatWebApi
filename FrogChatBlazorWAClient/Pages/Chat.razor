@@ -1,8 +1,12 @@
 ﻿@page "/chat/{user_fullName}"
 
-<div class="col-12">
-    <p></p>
-</div>
+@page "/chat"
+@*@page "/chat/{ToUserId}"*@
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@inject HttpClient _httpClient
 
 <div style="border:0px;height:90vh;">
     <div class="panel panel-primary" style="height: 100%;">
@@ -10,27 +14,41 @@
             <div class="col-md-8 col-xs-8">
                 <h3 class="panel-title">
 
-                    <b>@user_fullName</b>
-                    
                 </h3>
             </div>
         </div>
-
         <div id="divMessageContainerBase" class="panel-body msg_container_base">
-        </div>
 
+        </div>
         <!--CHAT USER BOX-->
         <div class="panel-footer">
             <div class="input-group" id="myForm">
-                <input id="txtMessageInput" type="text" class="form-control input-sm chat_input"
+                <input id="txtMessageInput" @bind="MessageText" type="text" class="form-control input-sm chat_input"
                        placeholder="Write your message here...">
+                <button class="btn btn-primary" @onclick="Send">Send</button>
             </div>
         </div>
     </div>
-
 </div>
 
 @code {
+    [Parameter]
+    public string ToUserId { get; set; }
+    public string FromUserId { get; set; }
+    public string MessageText { get; set; }
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+    private void Send()
+    {
+        
+    }
+
     [Parameter]
     public string user_fullName { get; set; }
 }

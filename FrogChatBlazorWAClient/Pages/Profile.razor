@@ -28,7 +28,7 @@
             @context.User.Identity.Name;
             Email  : @context.User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault()
             
-@*
+
             Name : @{
                 context
                 .User.Claims.Where(claim => claim.Type == ClaimTypes.Name)
@@ -42,7 +42,7 @@
                 .User.Claims.Where(claim => claim.Type == "picture")
                 .Select(claim => claim.Value)
                 .FirstOrDefault().ToString();
-            }*@
+            }
             @foreach (var claim in context.User.Claims)
             {
                 <tr>

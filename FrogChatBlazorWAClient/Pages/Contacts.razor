@@ -15,28 +15,11 @@
         }
 
     }
-    <a class="btn" href="https://localhost:44305/api/account/google-login?returnURL=https://localhost:7206/GoogleAuth">googleAUth </a> @*@onclick="GoogleLogin"*@
-    @**@
-@*<AuthorizeView>
-    <Authorized>
-        Welcome to your new app.
-        @foreach(var item in context.User.Claims)
-        {
-            <h2>@item.Type = @item.Value</h2>
-        }
-        <img src="@context.User.Claims.Where(s=> s.Type == "picture").FirstOrDefault().Value"/>
-    </Authorized>
-    <NotAuthorized>
-        <a href="auth/google-login" class="btn btn-secondary"> Login</a>
-    </NotAuthorized>
-</AuthorizeView>*@
+    <a class="btn" href="https://localhost:44305/api/account/google-login?returnURL=https://localhost:7206/GoogleAuth">googleAUth </a> 
+
 </div>
 
 @code{
     protected override async Task OnInitializedAsync() => await contactViewModel.GetContacts();
 
-    private async void GoogleLogin()
-    {
-        //navigationManager.NavigateTo("https://localhost:44305/api/account/google-login?returnURL=https://localhost:7206/GoogleAuth", true);
-    }
 }

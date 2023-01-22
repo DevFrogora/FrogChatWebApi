@@ -1,27 +1,29 @@
-﻿ines (21 sloc)  869 Bytes
+﻿@page "/GoogleAuth"
 
-@page "/GoogleAuth"
-
+@using ClientStorage;
+@using FrogChatService.WebApiUtils;
 @using Microsoft.AspNetCore.WebUtilities
 @inject NavigationManager navigationManager
-@inject ILocalStorageService localStorageService
+@inject IClientStorage clientStorage
 
 <h1>Please wait...</h1>
 <h3> Access Token : @AccessToken</h3>
 
 @code {
 
-    private Uri uri;
-    public string AccessToken { get; set; }
+    public string? AccessToken { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
-        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("access_token", out var _accessToken))
+
+        string access_token = UrlUtils.GetTokenFromUrl(navigationManager.ToAbsoluteUri(navigationManager.Uri));
+        if (string.IsNullOrEmpty(access_token))
         {
-            AccessToken = _accessToken;
-
-            await localStorageService.SetItemAsStringAsync("Token", _accessToken);
-
+            navigationManager.NavigateTo("/login", true);
+        }
+        else
+        {
+            AccessToken = access_token;
+            await clientStorage.SetItemAsStringAsync("Token", access_token);
             navigationManager.NavigateTo("/", true);
         }
     }

@@ -1,6 +1,9 @@
 using Blazored.LocalStorage;
+using ClientStorage;
 using FrogChatBlazorWAClient;
 using FrogChatService;
+using FrogChatService.AuthStateProvider;
+using FrogChatService.CustomHttpDelegate;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -27,6 +30,8 @@ builder.Services.AddHttpClient<IUserService, UserService>(client=>
 
 builder.Services.AddSingleton<IProfileViewModel,ProfileViewModel>();
 builder.Services.AddSingleton<IContactsViewModel, ContactsViewModel>();
+builder.Services.AddScoped<IClientStorage, BlazorLocalStorage>();
+
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 
