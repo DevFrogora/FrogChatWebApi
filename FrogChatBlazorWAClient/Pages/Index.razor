@@ -1,8 +1,12 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-<a class="btn" href="https://localhost:44305/api/account/google-login?returnURL=https://localhost:7206/GoogleAuth">googleAUth </a>
+        Welcome <b>@context.User.Identity.Name</b>
+    </Authorized>
+    <NotAuthorized>
+        <a class="btn btn-primary" href="https://localhost:44305/api/account/google-login?returnURL=https://localhost:7206/GoogleAuth">googleAUth </a>
+    </NotAuthorized>
+</AuthorizeView>

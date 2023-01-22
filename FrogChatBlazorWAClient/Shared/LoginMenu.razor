@@ -1,4 +1,5 @@
-﻿
+﻿@inject IClientStorage clientStorage
+@inject NavigationManager navigationManager
         <AuthorizeView>
             <Authorized>
                 <div class="top-row px-4">
@@ -7,22 +8,12 @@
                     <button class="btn btn-danger" @onclick="LogOut">LogOut</button>
                 </div>
             </Authorized>
-            <NotAuthorized>
-                <div class="top-row px-4">
-            @*<a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>*@
-            @*<h4><b> Email Address </b></h4>*@
-                    <button class="btn btn-Primary" @onclick="LogIn">LogIn</button>
-                </div>
-            </NotAuthorized>
         </AuthorizeView>
 
 @code {
     private async void LogOut()
     {
-
-    }
-    private void LogIn()
-    {
-
+        await clientStorage.RemoveItemAsync("Token");
+        navigationManager.NavigateTo("/",true);
     }
 }

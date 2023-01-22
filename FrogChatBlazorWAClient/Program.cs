@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using ClientStorage;
+using ClientStorage.GlobalVariable;
 using FrogChatBlazorWAClient;
 using FrogChatService;
 using FrogChatService.AuthStateProvider;
@@ -33,8 +34,7 @@ builder.Services.AddSingleton<IContactsViewModel, ContactsViewModel>();
 builder.Services.AddScoped<IClientStorage, BlazorLocalStorage>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-
-
+//builder.Services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
 
 
 

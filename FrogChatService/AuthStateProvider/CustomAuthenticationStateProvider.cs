@@ -3,6 +3,7 @@ using ClientStorage;
 using FrogChatModel.DTOModel;
 using FrogChatService.WebApiUtils;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -60,27 +61,35 @@ namespace FrogChatService.AuthStateProvider
             }
             return false;
         }
+
+        public bool IsTokenValid(string token)
+        {
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidAudience = "",
+                ValidIssuer = "",
+                ValidateLifetime = true,
+                ValidateAudience = true,
+                ValidateIssuer = true,
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken validatedToken = null;
+            try
+            {
+                tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+            }
+            catch (SecurityTokenException)
+            {
+                return false;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            //... manual validations return false if anything untoward is discovered
+            return validatedToken != null;
+
+        }
     }
 }
-
-//new[]{
-//                new Claim(ClaimTypes.Name , user.Name),
-//                new Claim(ClaimTypes.Email , user.Email),
-//                new Claim("picture" , user.PhotoUrl)
-
-//            }
-
-
-//UserDto currentUser = await httpClient.GetFromJsonAsync<UserDto>("api/user/GetCurrentUser");
-//if (currentUser != null && currentUser.Email != null)
-//{
-//    var claim = new Claim(ClaimTypes.Name, currentUser.Email);
-//    var claimIdentity = new ClaimsIdentity(new[] { claim });
-//    var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
-
-//    return new AuthenticationState(claimsPrincipal);
-//}
-//else
-//{
-//    return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-//}
