@@ -78,7 +78,7 @@ namespace FrogChatDAL.Repositories.Identity
             var token = new JwtSecurityToken(
                 issuer: configuration.GetValue<string>("Jwt:Issuer"),
                 audience: configuration.GetValue<string>("Jwt:Audience"),
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.UtcNow.AddDays(1),
                 claims: authClaims,
                 signingCredentials: credentials
                 );

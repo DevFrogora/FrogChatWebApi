@@ -1,5 +1,5 @@
 ﻿@using FrogChatService;
-
+@inject NavigationManager navigationManager
 @inject IUserService userService
 @inject AuthenticationStateProvider _authStateProvider
 @inject IClientStorage clientStorage;
@@ -33,8 +33,24 @@
 
             if (!user.Identity.IsAuthenticated)
             {
-                customAuthenticationStateProvider.NotifyOnUserAutentication(token);
+                if (customAuthenticationStateProvider.IsTokenExpired(token))
+                {
+                    customAuthenticationStateProvider.NotifyOnUserAutentication(token);
+                }
+                else
+                {
+                    await clientStorage.RemoveItemAsync("Token");
+                    customAuthenticationStateProvider.NotifyOnUserLogout();
+                }
             }
+            else
+            {
+                //navigationManager.NavigateTo("/");
+            }
+        }
+        else
+        {
+            //navigationManager.NavigateTo("/");
         }
 
     }

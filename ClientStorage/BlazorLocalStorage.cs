@@ -25,5 +25,10 @@ namespace ClientStorage
         {
             await localStorageService.SetItemAsStringAsync(key, value);
         }
+
+        public async Task RemoveItemAsync(string key)
+        {
+            await localStorageService.RemoveItemAsync(key);
+        }
     }
 }

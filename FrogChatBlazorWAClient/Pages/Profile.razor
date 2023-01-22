@@ -2,6 +2,7 @@
 @using FrogChatModel.DTOModel;
 @using FrogChatService;
 @using System.Security.Claims;
+@using FrogChatService.WebApiUtils;
 @using ViewModel;
 @inject HttpClient Http
 @inject IUserService userService
@@ -26,43 +27,12 @@
     <AuthorizeView>
         <Authorized>
             @context.User.Identity.Name;
-            Email  : @context.User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault()
             
+            Email  : @QueryIdentity.GetClaimValue(context.User,ClaimTypes.Email);
 
-            Name : @{
-                context
-                .User.Claims.Where(claim => claim.Type == ClaimTypes.Name)
-                .Select(claim => claim.Value)
-                .FirstOrDefault().ToString();
-            }
+            Name : @QueryIdentity.GetClaimValue(context.User,ClaimTypes.Name);
 
-
-            Picture : @{
-                context
-                .User.Claims.Where(claim => claim.Type == "picture")
-                .Select(claim => claim.Value)
-                .FirstOrDefault().ToString();
-            }
-            @foreach (var claim in context.User.Claims)
-            {
-                <tr>
-                    @if(claim.Type == ClaimTypes.Email)
-                    {
-                        <td>  email : @claim.Value</td>
-                    }
-                    @if (claim.Type == ClaimTypes.Name)
-                    {
-                        <td> Name: @claim.Value</td>
-                    }
-
-                    @if (claim.Type == "picture")
-                    {
-                        <td> picture:@claim.Value</td>
-                    }
-    @*                <td>@claim.Type</td>
-                    <td>@claim.Value</td>*@
-                </tr>
-            }
+            Picture : @QueryIdentity.GetClaimValue(context.User,"picture");
 
         </Authorized>
     </AuthorizeView>
