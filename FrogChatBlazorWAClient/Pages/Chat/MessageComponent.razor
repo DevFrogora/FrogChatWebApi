@@ -1,0 +1,48 @@
+﻿@using FrogChatModel.ChatModel;
+<div class="row">
+    <div class="col-sm-2  col-2  col-lg-1">
+
+        <img src="@messageViewModel.message.user.PhotoUrl"
+             alt="avatar 1" style="width: 45px; height: 100%;">
+
+    </div>
+    <div class="col-sm-10 col-10 col-lg-11">
+
+        <div class="row">
+            <div class="col-sm-10 col-10 ">
+                <div class="d-inline fw-bold"> @messageViewModel.message.user.Username</div>
+                <div class="d-inline fw-light fs-6"> @messageViewModel.message.dateTime.ToLongTimeString() </div>
+            </div>
+            <div class="col-sm-2 col-2">
+                <div class="dropdown text-end">
+                    <span class="  " id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="bi bi-three-dots text-end" data-toggle="dropdown"></span>
+                    </span>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <a class="dropdown-item" onclick="@messageViewModel.Edit">Edit</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" onclick="@messageViewModel.Delete">Delete</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" onclick="@messageViewModel.CopyId">copy id</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-12 ">
+                <div> @messageViewModel.message.content </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public IMessageViewModel messageViewModel { get; set; }
+}

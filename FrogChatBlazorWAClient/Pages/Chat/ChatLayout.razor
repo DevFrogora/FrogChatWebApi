@@ -1,0 +1,40 @@
+﻿
+@inject IChatLayoutViewModel chatLayout
+<div class="top-row ">
+    <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button>
+</div>
+<div class="container-fluid bg-secondary">
+    <div class="row" style="height: 90vh; background: green;">
+        <div class="col-12 col-sm-8 ">
+
+            <div class="row overflow-auto" style="height: 85vh; background: red;">
+                <div class="col-12 col-sm-12">
+                    @foreach (var message in chatLayout.messageList)
+                    {
+                        MessageViewModel messageViewModel = message;
+                        <MessageComponent messageViewModel="@messageViewModel" />
+                    }
+                </div>
+            </div>
+            <div class="row" style="height: 5vh; background: blue;">
+                <div class="col-9 col-sm-9 p-0">
+                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" @bind="chatLayout._inputMessage">
+                </div>
+                <div class="col-3 col-sm-3 text-center p-0">
+                    <button class="btn  btn-primary col-12 " @onclick="chatLayout.SendMessage">Send </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-4 d-none d-sm-block" style="background: pink;">
+            <div class="row overflow-auto" style="height: 90vh;">
+                <div class="col-sm-12">
+                    @foreach (var user in chatLayout.userList)
+                    {
+                        <div>@user.Username</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

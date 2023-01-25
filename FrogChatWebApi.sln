@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrogChatBlazorWAClient", "F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{4530ABE6-5F86-4941-B0CB-9E421728E85B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientStorage", "ClientStorage\ClientStorage.csproj", "{E6A8AA23-4B10-48C4-81E9-D9BCC09781F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientStorage", "ClientStorage\ClientStorage.csproj", "{E6A8AA23-4B10-48C4-81E9-D9BCC09781F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
