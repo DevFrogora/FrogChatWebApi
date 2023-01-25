@@ -5,6 +5,7 @@ using FrogChatDAL.Repositories.Identity;
 //using FrogChatDAL.Repositories.EF;
 using FrogChatDAL.Repositories.InMemory;
 using FrogChatModel;
+using FrogChatWebApi.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,7 +31,7 @@ namespace FrogChatWebApi
             // Ef core Db Config
             builder.Services.AddDbContext<FrogChatDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
-
+            builder.Services.AddSignalR();
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -117,8 +118,7 @@ namespace FrogChatWebApi
             app.MapControllers();
             app.UseAuthorization();
 
-
-
+            app.MapHub<ChatHub>("/chathub");
             app.Run();
         }
     }

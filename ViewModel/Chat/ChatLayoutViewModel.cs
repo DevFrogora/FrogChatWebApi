@@ -1,5 +1,6 @@
 ﻿using FrogChatModel.ChatModel;
 using FrogChatModel.DTOModel;
+using FrogChatService.ChatService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,21 +11,37 @@ namespace ViewModel.Chat
 {
     public class ChatLayoutViewModel :IChatLayoutViewModel
     {
-        public List<UserDto> userList = new List<UserDto>();
-        public List<Message> messageList = new List<Message>();
+        private readonly IChatService chatService;
+        public List<UserDto> userList { get; set; } = new();
+        public List<Message> messageList { get; set; } = new();
 
-        public string _inputMessage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<UserDto> IChatLayoutViewModel.userList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Message> IChatLayoutViewModel.messageList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public Task DisconnectAsync()
+        public ChatLayoutViewModel(IChatService chatService)
         {
-            throw new NotImplementedException();
+            this.chatService = chatService;
+        }
+
+
+        public string _inputMessage { get ; set; }
+
+        public async Task init()
+        {
+            chatService.OnMessageReceivedPublisher += OnMessageReceived;
+            await chatService.init();
+        }
+        void OnMessageReceived(Message message)
+        {
+            messageList.Add(message);
+        }
+        
+
+        public async Task DisconnectAsync()
+        {
+           await chatService.DisposeAsync();
         }
 
         public void SendMessage()
         {
-            throw new NotImplementedException();
+            chatService.Send(_inputMessage);
         }
     }
 }
