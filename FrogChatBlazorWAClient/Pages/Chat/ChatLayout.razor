@@ -14,8 +14,7 @@
                 <div class="col-12 col-sm-12">
                     @foreach (var message in chatLayout.messageList)
                     {
-                        MessageViewModel messageViewModel = message;
-                        <MessageComponent messageViewModel="@messageViewModel" />
+                        <MessageComponent message="@message" />
                     }
                 </div>
             </div>

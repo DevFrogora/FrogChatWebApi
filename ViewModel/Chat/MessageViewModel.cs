@@ -13,20 +13,23 @@ namespace ViewModel.Chat
     {
         private readonly IClipboardService clipboardService;
 
-        public MessageViewModel()
-        {
 
-        }
 
         public MessageViewModel(IClipboardService clipboardService)
         {
             this.clipboardService = clipboardService;
         }
 
+        //public MessageViewModel()
+        //{
+
+        //}
+
         public Message message {get; set;}
 
         public void CopyId()
         {
+            Console.WriteLine(message.content);
             clipboardService.CopyToClipboard(message.id.ToString());
         }
 
@@ -38,13 +41,13 @@ namespace ViewModel.Chat
         {
         }
 
-        public static implicit operator MessageViewModel(Message meessage)
-        {
+        //public static implicit operator MessageViewModel(Message meessage)
+        //{
 
-            return new MessageViewModel
-            {
-                message = meessage
-            };
-        }
+        //    return new MessageViewModel
+        //    {
+        //        message = meessage
+        //    };
+        //}
     }
 }

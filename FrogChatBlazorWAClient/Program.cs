@@ -6,6 +6,7 @@ using FrogChatBlazorWAClient.Pages.Chat;
 using FrogChatService;
 using FrogChatService.AuthStateProvider;
 using FrogChatService.ChatService;
+using FrogChatService.ClipBoard;
 using FrogChatService.CustomHttpDelegate;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -39,6 +40,8 @@ builder.Services.AddScoped<IClientStorage, BlazorLocalStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddSingleton<IChatService, ChatService>();
 builder.Services.AddSingleton<IChatLayoutViewModel, ChatLayoutViewModel>();
+builder.Services.AddSingleton<IClipboardService,BlazorClipBoardService>();
+builder.Services.AddTransient<IMessageViewModel, MessageViewModel>();
 
 
 //builder.Services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
