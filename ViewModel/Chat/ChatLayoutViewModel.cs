@@ -15,6 +15,7 @@ namespace ViewModel.Chat
         public List<UserDto> userList { get; set; } = new();
         public List<Message> messageList { get; set; } = new();
 
+
         public ChatLayoutViewModel(IChatService chatService)
         {
             this.chatService = chatService;
@@ -27,8 +28,16 @@ namespace ViewModel.Chat
         public async Task init(string chatHubUri, string? tokenString)
         {
             chatService.OnMessageReceivedPublisher += OnMessageReceived;
+            chatService.OnUserListReceivedPublisher += ChatService_OnUserListReceivedPublisher;
             await chatService.init(chatHubUri, tokenString);
         }
+
+        private void ChatService_OnUserListReceivedPublisher(List<UserDto> obj)
+        {
+            userList = obj;
+            OnMessageReceivedDelegate();
+        }
+
         void OnMessageReceived(Message message)
         {
             messageList.Add(message);

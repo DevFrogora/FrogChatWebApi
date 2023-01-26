@@ -64,6 +64,8 @@ namespace FrogChatDAL.Repositories.Identity
                 new Claim(ClaimTypes.Name , user.Name),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("picture",user.PhotoUrl),
+                new Claim("userId",user.Id),
+                new Claim("username",user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 

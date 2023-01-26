@@ -14,7 +14,7 @@ namespace FrogChatWebApi.Hubs
             }
         }
 
-        public List<UserDto> users;
+        public List<UserDto> users = new();
 
     }
 }

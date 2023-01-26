@@ -1,4 +1,5 @@
 ﻿using FrogChatModel.ChatModel;
+using FrogChatModel.DTOModel;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,15 @@ namespace FrogChatService.ChatService
         private HubConnection? hubConnection;
 
         public event Action<Message> OnMessageReceivedPublisher;
+        public event Action<List<UserDto>> OnUserListReceivedPublisher;
+
 
         //private List<Message> messages = new List<Message>();
 
         //public delegate void OnMessageReceived(Message message);
         //public event OnMessageReceived OnMessageReceivedPublisher;
 
-        public  async Task init(string chatHubUri,string? tokenString)
+        public async Task init(string chatHubUri,string? tokenString)
         {
             hubConnection = new HubConnectionBuilder()
                 .WithUrl(new Uri(chatHubUri), options =>
@@ -34,6 +37,17 @@ namespace FrogChatService.ChatService
                 //InvokeAsync(StateHasChanged);
                 OnMessageReceivedPublisher(message);
             });
+
+            hubConnection.On<List<UserDto>>("Connected", (userList) =>
+            {
+                OnUserListReceivedPublisher(userList);
+            });
+
+            hubConnection.On<List<UserDto>>("Disconnected", (userList) =>
+            {
+                OnUserListReceivedPublisher(userList);
+            });
+
             //hubConnection
             await hubConnection.StartAsync();
         }
