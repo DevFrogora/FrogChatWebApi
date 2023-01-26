@@ -54,6 +54,20 @@ namespace FrogChatWebApi
             })
                 .AddJwtBearer(options =>
             {
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        if (!string.IsNullOrEmpty(accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+
+
                 // it will check token is present or not
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = false;
@@ -91,6 +105,8 @@ namespace FrogChatWebApi
             builder.Services.AddScoped<IAccountRepository, IdentityAccountRepository>();
             builder.Services.AddScoped<IRoleRepository, IdentityRoleRepository>();
             builder.Services.AddScoped<IUserRepository, IdentityUserRepository>();
+            builder.Services.AddSingleton<ChatPersistenceData>();
+
 
             const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             builder.Services.AddCors(options =>

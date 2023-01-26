@@ -24,10 +24,10 @@ namespace ViewModel.Chat
 
         public string _inputMessage { get ; set; }
 
-        public async Task init(string chatHubUri)
+        public async Task init(string chatHubUri, string? tokenString)
         {
             chatService.OnMessageReceivedPublisher += OnMessageReceived;
-            await chatService.init(chatHubUri);
+            await chatService.init(chatHubUri, tokenString);
         }
         void OnMessageReceived(Message message)
         {

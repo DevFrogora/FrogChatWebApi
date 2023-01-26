@@ -12,7 +12,7 @@ namespace FrogChatService.ChatService
     public interface IChatService
     {
         event Action<Message> OnMessageReceivedPublisher;
-        Task init(string chatHubUri);
+        Task init(string chatHubUri, string? tokenString);
         Task Send(Message messageInput);
         bool IsConnected { get; }
         ValueTask DisposeAsync();

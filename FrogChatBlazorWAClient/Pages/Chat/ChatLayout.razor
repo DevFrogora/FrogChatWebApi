@@ -3,6 +3,7 @@
 @using FrogChatService.WebApiUtils;
 @using System.Security.Claims;
 @inject IChatLayoutViewModel chatLayout
+@inject IClientStorage clientStorage
 <div class="top-row ">
     <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button>
 </div>
@@ -62,7 +63,7 @@
     protected override async Task OnInitializedAsync()
     {
         chatLayout.OnMessageReceivedDelegate += OnMessageReceive;
-        await chatLayout.init(@"https://localhost:44305/chathub");
+        await chatLayout.init(@"https://localhost:44305/chathub",await clientStorage.GetItemAsStringAsync("Token"));
     }
 
     private void OnMessageReceive()
