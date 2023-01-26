@@ -8,10 +8,11 @@
     <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button>
 </div>
 <div class="container-fluid bg-secondary">
-    <div class="row" style="height: 90vh; background: green;">
+    <div class="row" style="height: 80vh; background: green;">
         <div class="col-12 col-sm-8 ">
 
-            <div class="row overflow-auto" style="height: 85vh; background: red;">
+            <div class="row overflow-auto" style="height: 80vh; background: red;">
+                @**@
                 <div class="col-12 col-sm-12">
                     @foreach (var message in chatLayout.messageList)
                     {
@@ -30,11 +31,27 @@
 
         </div>
         <div class="col-sm-4 d-none d-sm-block" style="background: pink;">
-            <div class="row overflow-auto" style="height: 90vh;">
+            <div class="row overflow-auto h-auto" style="">
+                @*height: 90vh;*@
                 <div class="col-sm-12">
+
                     @foreach (var user in chatLayout.userList)
                     {
-                        <div>@user.Username</div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3  col-3  col-lg-2">
+
+                                <img src="@user.PhotoUrl" class="w-100 h-100"
+                                 alt="avatar 1"  referrerpolicy="no-referrer">
+
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-9  col-lg-10 p-lg-2 p-md-0">
+
+                                @user.Name
+
+                            </div>
+                        </div>
+
+
                     }
                 </div>
             </div>
@@ -63,7 +80,7 @@
     protected override async Task OnInitializedAsync()
     {
         chatLayout.OnMessageReceivedDelegate += OnMessageReceive;
-        await chatLayout.init(@"https://localhost:44305/chathub",await clientStorage.GetItemAsStringAsync("Token"));
+        await chatLayout.init(@"https://localhost:44305/chathub", await clientStorage.GetItemAsStringAsync("Token"));
     }
 
     private void OnMessageReceive()
@@ -81,7 +98,7 @@
             };
         //if (!string.IsNullOrEmpty(chatLayout._inputMessage))
         //{
-            chatLayout.SendMessage(newMessage);
+        chatLayout.SendMessage(newMessage);
         //}
     }
 
