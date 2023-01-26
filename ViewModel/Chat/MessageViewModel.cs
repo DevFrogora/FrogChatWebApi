@@ -32,12 +32,10 @@ namespace ViewModel.Chat
 
         public void Delete()
         {
-            throw new NotImplementedException();
         }
 
         public void Edit()
         {
-            throw new NotImplementedException();
         }
 
         public static implicit operator MessageViewModel(Message meessage)
