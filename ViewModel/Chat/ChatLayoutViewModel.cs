@@ -20,17 +20,19 @@ namespace ViewModel.Chat
             this.chatService = chatService;
         }
 
+        public event Action OnMessageReceivedDelegate;
 
         public string _inputMessage { get ; set; }
 
-        public async Task init()
+        public async Task init(string chatHubUri)
         {
             chatService.OnMessageReceivedPublisher += OnMessageReceived;
-            await chatService.init();
+            await chatService.init(chatHubUri);
         }
         void OnMessageReceived(Message message)
         {
             messageList.Add(message);
+            OnMessageReceivedDelegate();
         }
         
 
@@ -39,9 +41,9 @@ namespace ViewModel.Chat
            await chatService.DisposeAsync();
         }
 
-        public void SendMessage()
+        public void SendMessage(Message newMessage)
         {
-            chatService.Send(_inputMessage);
+            chatService.Send(newMessage);
         }
     }
 }

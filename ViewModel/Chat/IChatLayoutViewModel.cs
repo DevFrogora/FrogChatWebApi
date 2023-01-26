@@ -14,6 +14,9 @@ namespace ViewModel.Chat
         List<Message> messageList { get; set; }
         string _inputMessage { get; set; }
         Task DisconnectAsync();
-        void SendMessage();
+        void SendMessage(Message message);
+        event Action OnMessageReceivedDelegate;
+        Task init(string chatHubUri);
+
     }
 }

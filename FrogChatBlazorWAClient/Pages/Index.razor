@@ -1,10 +1,13 @@
 ﻿@page "/"
-
+@using FrogChatBlazorWAClient.Pages.Chat;
 <AuthorizeView>
     <Authorized>
         <PageTitle>Index</PageTitle>
 
-        Welcome <b>@context.User.Identity.Name</b>
+        @*Welcome <b>@context.User.Identity.Name</b>*@
+        <ChatLayout>
+
+        </ChatLayout>
     </Authorized>
     <NotAuthorized>
         <a class="btn btn-primary" href="https://localhost:44305/api/account/google-login?returnURL=https://localhost:7206/GoogleAuth">googleAUth </a>

@@ -1,4 +1,7 @@
-﻿
+﻿@using FrogChatModel.ChatModel;
+@using FrogChatModel.DTOModel;
+@using FrogChatService.WebApiUtils;
+@using System.Security.Claims;
 @inject IChatLayoutViewModel chatLayout
 <div class="top-row ">
     <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button>
@@ -21,7 +24,7 @@
                     <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" @bind="chatLayout._inputMessage">
                 </div>
                 <div class="col-3 col-sm-3 text-center p-0">
-                    <button class="btn  btn-primary col-12 " @onclick="chatLayout.SendMessage">Send </button>
+                    <button class="btn  btn-primary col-12 " @onclick="SendMessage">Send </button>
                 </div>
             </div>
 
@@ -38,3 +41,45 @@
         </div>
     </div>
 </div>
+<AuthorizeView>
+    <Authorized>
+        @{
+            userDto = new UserDto()
+                {
+                    Email = QueryIdentity.GetClaimValue(context.User, ClaimTypes.Email),
+
+                    Name = QueryIdentity.GetClaimValue(context.User, ClaimTypes.Name),
+
+                    PhotoUrl = QueryIdentity.GetClaimValue(context.User, "picture"),
+                };
+        }
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    private UserDto userDto = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        chatLayout.OnMessageReceivedDelegate += OnMessageReceive;
+        await chatLayout.init(@"https://localhost:44305/chathub");
+    }
+
+    private void OnMessageReceive()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void SendMessage()
+    {
+        Message newMessage = new Message()
+            {
+                content = chatLayout._inputMessage,
+                dateTime = DateTime.Now,
+                user = userDto
+            };
+        chatLayout.SendMessage(newMessage);
+    }
+
+}

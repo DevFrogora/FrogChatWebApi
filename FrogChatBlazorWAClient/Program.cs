@@ -2,13 +2,16 @@ using Blazored.LocalStorage;
 using ClientStorage;
 using ClientStorage.GlobalVariable;
 using FrogChatBlazorWAClient;
+using FrogChatBlazorWAClient.Pages.Chat;
 using FrogChatService;
 using FrogChatService.AuthStateProvider;
+using FrogChatService.ChatService;
 using FrogChatService.CustomHttpDelegate;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ViewModel;
+using ViewModel.Chat;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -34,6 +37,10 @@ builder.Services.AddSingleton<IContactsViewModel, ContactsViewModel>();
 builder.Services.AddScoped<IClientStorage, BlazorLocalStorage>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddSingleton<IChatService, ChatService>();
+builder.Services.AddSingleton<IChatLayoutViewModel, ChatLayoutViewModel>();
+
+
 //builder.Services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
 
 

@@ -12,8 +12,8 @@ namespace FrogChatService.ChatService
     public interface IChatService
     {
         event Action<Message> OnMessageReceivedPublisher;
-        Task init();
-        Task Send(string? messageInput);
+        Task init(string chatHubUri);
+        Task Send(Message messageInput);
         bool IsConnected { get; }
         ValueTask DisposeAsync();
     }

@@ -19,10 +19,10 @@ namespace FrogChatService.ChatService
         //public delegate void OnMessageReceived(Message message);
         //public event OnMessageReceived OnMessageReceivedPublisher;
 
-        public  async Task init()
+        public  async Task init(string chatHubUri)
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl(new Uri("/chathub"))
+                .WithUrl(new Uri(chatHubUri))  // server uri <-
                 .Build();
 
             hubConnection.On<Message>("ReceiveMessage", ( message) =>
@@ -35,7 +35,7 @@ namespace FrogChatService.ChatService
             await hubConnection.StartAsync();
         }
 
-        public async Task Send(string? messageInput)
+        public async Task Send(Message messageInput)
         {
             if (hubConnection is not null)
             {
