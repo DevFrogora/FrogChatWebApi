@@ -79,7 +79,10 @@
                 dateTime = DateTime.Now,
                 user = userDto
             };
-        chatLayout.SendMessage(newMessage);
+        //if (!string.IsNullOrEmpty(chatLayout._inputMessage))
+        //{
+            chatLayout.SendMessage(newMessage);
+        //}
     }
 
 }

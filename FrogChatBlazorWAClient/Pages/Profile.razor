@@ -33,6 +33,16 @@
             Name : @QueryIdentity.GetClaimValue(context.User,ClaimTypes.Name);
 
             Picture : @QueryIdentity.GetClaimValue(context.User,"picture");
+@*            <table>
+                @foreach (var claim in context.User.Claims.ToList())
+                {
+                    <tr>
+                        <td>@claim.Type</td>
+                        <td>@claim.Value</td>
+                    </tr>
+                }
+            </table>
+*@
 
         </Authorized>
     </AuthorizeView>

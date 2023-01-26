@@ -11,11 +11,11 @@ namespace FrogChatService.WebApiUtils
     {
         public static string? GetClaimValue(ClaimsPrincipal claimsPrincipal,string claimType)
         {
-           return claimsPrincipal.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault();
+           return claimsPrincipal.Claims.Where(claim => claim.Type == claimType).Select(claim => claim.Value).FirstOrDefault();
         }
         public static string? GetClaimValue(IEnumerable<Claim> Claims, string claimType)
         {
-            return Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault();
+            return Claims.Where(claim => claim.Type == claimType).Select(claim => claim.Value).FirstOrDefault();
         }
     }
 }
