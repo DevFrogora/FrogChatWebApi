@@ -5,7 +5,7 @@
 @inject IChatLayoutViewModel chatLayout
 @inject IClientStorage clientStorage
 <div class="top-row ">
-    <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button>
+    <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button> <button @onclick="OnMessageDeleteUpdate">Refresh UI</button>
 </div>
 <div class="container-fluid bg-secondary">
     <div class="row" style="height: 80vh; background: green;">
@@ -17,12 +17,14 @@
                     @foreach (var message in chatLayout.messageList)
                     {
                         <MessageComponent message="@message" />
+                        @*Task.Delay(500);*@
                     }
                 </div>
             </div>
             <div class="row" style="height: 5vh; background: blue;">
                 <div class="col-9 col-sm-9 p-0">
-                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" @bind="chatLayout._inputMessage">
+                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" 
+                    @bind="chatLayout._inputMessage" @bind:event="oninput" @onkeydown="@Enter">
                 </div>
                 <div class="col-3 col-sm-3 text-center p-0">
                     <button class="btn  btn-primary col-12 " @onclick="SendMessage">Send </button>
@@ -51,7 +53,6 @@
                             </div>
                         </div>
 
-
                     }
                 </div>
             </div>
@@ -79,15 +80,26 @@
 
     protected override async Task OnInitializedAsync()
     {
-        chatLayout.OnMessageReceivedDelegate += OnMessageReceive;
+        chatLayout.NotifyToUIUpdate += NotifyToUIUpdate;
+        chatLayout.NotifyToUIOnMessageDelete += OnMessageDeleteUpdate;
         await chatLayout.init(@"https://localhost:44305/chathub", await clientStorage.GetItemAsStringAsync("Token"));
     }
 
-    private void OnMessageReceive()
+    private void NotifyToUIUpdate()
     {
         InvokeAsync(StateHasChanged);
     }
-
+    private async void OnMessageDeleteUpdate()
+    {
+        List<Message> TempmessageList = chatLayout.messageList;
+        chatLayout.messageList = new();
+        foreach (var msg in TempmessageList)
+        {
+            chatLayout.messageList.Add(msg);
+            StateHasChanged();
+            await Task.Delay(10);
+        }
+    }
     private void SendMessage()
     {
         Message newMessage = new Message()
@@ -96,10 +108,17 @@
                 dateTime = DateTime.Now,
                 user = userDto
             };
-        //if (!string.IsNullOrEmpty(chatLayout._inputMessage))
-        //{
-        chatLayout.SendMessage(newMessage);
-        //}
+        if (!string.IsNullOrEmpty(chatLayout._inputMessage))
+        {
+            chatLayout.SendMessage(newMessage);
+        }
     }
 
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            SendMessage();
+        }
+    }
 }

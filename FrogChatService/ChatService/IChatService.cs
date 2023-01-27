@@ -14,9 +14,11 @@ namespace FrogChatService.ChatService
     {
         event Action<Message> OnMessageReceivedPublisher;
         event Action<List<UserDto>> OnUserListReceivedPublisher;
+        event Action<int> OnMessageDelete;
 
         Task init(string chatHubUri, string? tokenString);
         Task Send(Message messageInput);
+        Task Delete_Message(int messageId);
         bool IsConnected { get; }
         ValueTask DisposeAsync();
     }

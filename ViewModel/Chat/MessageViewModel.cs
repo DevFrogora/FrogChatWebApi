@@ -1,5 +1,6 @@
 ﻿using FrogChatModel.ChatModel;
 using FrogChatModel.DTOModel;
+using FrogChatService.ChatService;
 using FrogChatService.ClipBoard;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,14 @@ namespace ViewModel.Chat
     public class MessageViewModel : IMessageViewModel
     {
         private readonly IClipboardService clipboardService;
+        private readonly IChatService chatService;
 
 
-
-        public MessageViewModel(IClipboardService clipboardService)
+        public MessageViewModel(IClipboardService clipboardService,IChatService chatService)
         {
             this.clipboardService = clipboardService;
+            this.chatService = chatService;
         }
-
-        //public MessageViewModel()
-        //{
-
-        //}
 
         public Message message {get; set;}
 
@@ -35,6 +32,8 @@ namespace ViewModel.Chat
 
         public void Delete()
         {
+            Console.WriteLine(message.id);
+            chatService.Delete_Message(message.id);
         }
 
         public void Edit()

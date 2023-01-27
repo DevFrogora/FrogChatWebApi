@@ -15,6 +15,7 @@ namespace FrogChatService.ChatService
 
         public event Action<Message> OnMessageReceivedPublisher;
         public event Action<List<UserDto>> OnUserListReceivedPublisher;
+        public event Action<int> OnMessageDelete;
 
 
         //private List<Message> messages = new List<Message>();
@@ -38,6 +39,13 @@ namespace FrogChatService.ChatService
                 OnMessageReceivedPublisher(message);
             });
 
+            hubConnection.On<int>("ReceiveDeleteMessage", (messageId) =>
+            {
+                OnMessageDelete(messageId);
+            });
+
+            
+
             hubConnection.On<List<UserDto>>("Connected", (userList) =>
             {
                 OnUserListReceivedPublisher(userList);
@@ -57,6 +65,14 @@ namespace FrogChatService.ChatService
             if (hubConnection is not null)
             {
                 await hubConnection.SendAsync("SendMessage", messageInput);
+            }
+        }
+
+        public async Task Delete_Message(int messageId)
+        {
+            if (hubConnection is not null)
+            {
+                await hubConnection.SendAsync("DeleteMessage", messageId);
             }
         }
 

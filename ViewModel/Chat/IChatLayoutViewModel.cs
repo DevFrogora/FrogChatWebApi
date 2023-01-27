@@ -15,7 +15,8 @@ namespace ViewModel.Chat
         string _inputMessage { get; set; }
         Task DisconnectAsync();
         void SendMessage(Message message);
-        event Action OnMessageReceivedDelegate;
+        event Action NotifyToUIOnMessageDelete;
+        event Action NotifyToUIUpdate;
         Task init(string chatHubUri, string? tokenString);
 
     }

@@ -30,6 +30,11 @@ namespace FrogChatWebApi.Hubs
             await Clients.All.SendAsync("ReceiveMessage", message);
         }
 
+        public async Task DeleteMessage(int messageId)
+        {
+            await Clients.All.SendAsync("ReceiveDeleteMessage", messageId);
+        }
+
         public override async Task OnConnectedAsync()
         {
             string userId = Context.User.Claims.Where(claim => claim.Type == "userId").Select(claim => claim.Value).FirstOrDefault();

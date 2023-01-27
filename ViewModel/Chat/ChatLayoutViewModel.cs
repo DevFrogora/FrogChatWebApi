@@ -21,7 +21,9 @@ namespace ViewModel.Chat
             this.chatService = chatService;
         }
 
-        public event Action OnMessageReceivedDelegate;
+        public event Action NotifyToUIUpdate;
+        public event Action NotifyToUIOnMessageDelete;
+
 
         public string _inputMessage { get ; set; }
 
@@ -29,19 +31,32 @@ namespace ViewModel.Chat
         {
             chatService.OnMessageReceivedPublisher += OnMessageReceived;
             chatService.OnUserListReceivedPublisher += ChatService_OnUserListReceivedPublisher;
+            chatService.OnMessageDelete += ChatService_OnMessageDelete;
             await chatService.init(chatHubUri, tokenString);
         }
 
-        private void ChatService_OnUserListReceivedPublisher(List<UserDto> obj)
+        private void ChatService_OnMessageDelete(int messageId)
         {
-            userList = obj;
-            OnMessageReceivedDelegate();
+            var mesageToDelete = messageList.Where(message => message.id == messageId).FirstOrDefault();
+            if (mesageToDelete != null)
+            {
+                Console.WriteLine($"Deleted ID: {mesageToDelete.id} Content: {mesageToDelete.content} ");
+
+                messageList.Remove(mesageToDelete);
+                NotifyToUIOnMessageDelete();
+            }
+        }
+
+        private void ChatService_OnUserListReceivedPublisher(List<UserDto> _userList)
+        {
+            userList = _userList;
+            NotifyToUIUpdate();
         }
 
         void OnMessageReceived(Message message)
         {
             messageList.Add(message);
-            OnMessageReceivedDelegate();
+            NotifyToUIUpdate();
         }
         
 
@@ -53,6 +68,7 @@ namespace ViewModel.Chat
         public void SendMessage(Message newMessage)
         {
             chatService.Send(newMessage);
+            _inputMessage = string.Empty;
         }
     }
 }
