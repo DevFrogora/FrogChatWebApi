@@ -32,7 +32,20 @@ namespace ViewModel.Chat
             chatService.OnMessageReceivedPublisher += OnMessageReceived;
             chatService.OnUserListReceivedPublisher += ChatService_OnUserListReceivedPublisher;
             chatService.OnMessageDelete += ChatService_OnMessageDelete;
+            chatService.OnMessageEdit += ChatService_OnMessageEdit;
             await chatService.init(chatHubUri, tokenString);
+        }
+
+        private void ChatService_OnMessageEdit(Message editedMessage)
+        {
+            var mesageToEdit = messageList.Where(message => message.id == editedMessage.id).FirstOrDefault();
+            if (mesageToEdit != null)
+            {
+                Console.WriteLine($"Deleted ID: {mesageToEdit.id} Content: {mesageToEdit.content} ");
+
+                mesageToEdit.content= editedMessage.content;
+                NotifyToUIUpdate();
+            }
         }
 
         private void ChatService_OnMessageDelete(int messageId)

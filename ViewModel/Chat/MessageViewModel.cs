@@ -38,15 +38,7 @@ namespace ViewModel.Chat
 
         public void Edit()
         {
+            chatService.Edit_Message(message);
         }
-
-        //public static implicit operator MessageViewModel(Message meessage)
-        //{
-
-        //    return new MessageViewModel
-        //    {
-        //        message = meessage
-        //    };
-        //}
     }
 }
