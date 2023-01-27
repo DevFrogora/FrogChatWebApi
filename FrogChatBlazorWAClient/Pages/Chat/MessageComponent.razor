@@ -59,7 +59,7 @@
                     @*<input @bind="@messageViewModel.message.content"  @bind:event="onchange"/>*@
                     <div>
                         @messageViewModel.message.content
-                        @if (isMessageedited)
+                        @if (messageViewModel.message.isMessageEdited)
                         {
                             <span class="fs-6"> (edited) </span>
                         }
@@ -85,7 +85,6 @@
     public IMessageViewModel messageViewModel { get; set; }
     [Parameter]
     public Message message { get; set; }
-    private bool isMessageedited = false;
 
     protected override void OnInitialized()
     {
@@ -101,6 +100,7 @@
     }
     private void EditCancel()
     {
+        tempEditingMsg = messageViewModel.message.content;
         IsEditing = false;
     }
     private void EditSave()
@@ -108,7 +108,6 @@
         IsEditing = false;
         messageViewModel.message.content = tempEditingMsg;
         messageViewModel.Edit();
-        isMessageedited = true;
     }
     string tempEditingMsg;
     private async Task OnEditingInput(Microsoft.AspNetCore.Components.ChangeEventArgs eventArgs)

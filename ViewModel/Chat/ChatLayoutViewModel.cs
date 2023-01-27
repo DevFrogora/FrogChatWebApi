@@ -44,6 +44,7 @@ namespace ViewModel.Chat
                 Console.WriteLine($"Deleted ID: {mesageToEdit.id} Content: {mesageToEdit.content} ");
 
                 mesageToEdit.content= editedMessage.content;
+                mesageToEdit.isMessageEdited = true;
                 NotifyToUIUpdate();
             }
         }
