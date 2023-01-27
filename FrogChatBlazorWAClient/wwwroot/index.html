@@ -18,6 +18,19 @@
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <script type="text/javascript">
+        let firstTime = true;
+        function chatScrollToEnd(container) {
+            if (firstTime) {
+                container.scrollTop = container.scrollHeight;
+                firstTime = false;
+            } else if (container.scrollTop + container.clientHeight > container.scrollHeight -300) {
+                console.log("hitting down")
+                container.scrollTop = container.scrollHeight;
+            }
+
+        }
+    </script>
 </head>
 
 <body>

@@ -4,6 +4,7 @@
 @using System.Security.Claims;
 @inject IChatLayoutViewModel chatLayout
 @inject IClientStorage clientStorage
+@inject IJSRuntime JS
 <div class="top-row ">
     <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button> <button @onclick="OnMessageDeleteUpdate">Refresh UI</button>
 </div>
@@ -11,7 +12,7 @@
     <div class="row" style="height: 80vh; background: green;">
         <div class="col-12 col-sm-8 ">
 
-            <div class="row overflow-auto" style="height: 80vh; background: red;">
+            <div @ref="messageParentDiv" class="row overflow-auto" style="height: 80vh; background: red;">
                 @**@
                 <div class="col-12 col-sm-12">
                     @foreach (var message in chatLayout.messageList)
@@ -76,6 +77,7 @@
 
 
 @code {
+    private ElementReference messageParentDiv;
     private UserDto userDto = new();
 
     protected override async Task OnInitializedAsync()
@@ -88,6 +90,7 @@
     private void NotifyToUIUpdate()
     {
         InvokeAsync(StateHasChanged);
+        JS.InvokeVoidAsync("chatScrollToEnd", messageParentDiv);
     }
     private async void OnMessageDeleteUpdate()
     {
