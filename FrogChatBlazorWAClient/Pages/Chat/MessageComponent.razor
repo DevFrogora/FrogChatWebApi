@@ -1,5 +1,6 @@
 ﻿@using FrogChatModel.ChatModel;
 @using System.Security.Claims;
+@inject IJSRuntime JS
 <div class="row mt-3">
     <div class="col-sm-2  col-2  col-lg-1">
 
@@ -51,13 +52,22 @@
             <div class="col-sm-12 col-12 ">
                 @if (IsEditing)
                 {
-                    <div contenteditable="true" class="bg-secondary"> @messageViewModel.message.content </div>
+                    <div @ref="refMessageContent" contenteditable="true" class="bg-secondary" @oninput="OnEditingInput"> @messageViewModel.message.content </div>
                 }
                 else
                 {
-                    <div> @messageViewModel.message.content </div>
+                    @*<input @bind="@messageViewModel.message.content"  @bind:event="onchange"/>*@
+                    <div>
+                        @messageViewModel.message.content
+                        @if (isMessageedited)
+                        {
+                            <span class="fs-6"> (edited) </span>
+                        }
+                    </div>
                 }
             </div>
+
+
         </div>
         @if (IsEditing)
         {
@@ -75,11 +85,14 @@
     public IMessageViewModel messageViewModel { get; set; }
     [Parameter]
     public Message message { get; set; }
+    private bool isMessageedited = false;
 
     protected override void OnInitialized()
     {
         messageViewModel.message = message;
+        tempEditingMsg = message.content;
     }
+    ElementReference refMessageContent;
 
     bool IsEditing = false;
     private void Edit()
@@ -93,6 +106,14 @@
     private void EditSave()
     {
         IsEditing = false;
+        messageViewModel.message.content = tempEditingMsg;
         messageViewModel.Edit();
+        isMessageedited = true;
+    }
+    string tempEditingMsg;
+    private async Task OnEditingInput(Microsoft.AspNetCore.Components.ChangeEventArgs eventArgs)
+    {
+        tempEditingMsg = await JS.InvokeAsync<string>("getContentValue", refMessageContent);
+        Console.WriteLine(tempEditingMsg);
     }
 }
