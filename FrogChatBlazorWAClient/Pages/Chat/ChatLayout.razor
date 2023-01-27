@@ -6,7 +6,7 @@
 @inject IClientStorage clientStorage
 @inject IJSRuntime JS
 <div class="top-row ">
-    <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button> <button @onclick="OnMessageDeleteUpdate">Refresh UI</button>
+    <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button> <button @onclick="CheckList">Refresh UI</button>
 </div>
 <div class="container-fluid bg-secondary">
     <div class="row" style="height: 80vh; background: green;">
@@ -96,13 +96,23 @@
     {
         List<Message> TempmessageList = chatLayout.messageList;
         chatLayout.messageList = new();
+        StateHasChanged();
         foreach (var msg in TempmessageList)
         {
             chatLayout.messageList.Add(msg);
-            StateHasChanged();
-            await Task.Delay(10);
+             StateHasChanged();
+            await Task.Delay(100);
         }
     }
+
+    void CheckList()
+    {
+        foreach (var msg in chatLayout.messageList)
+        {
+            Console.WriteLine($" {msg.id}  : {msg.content} ");
+        }
+    }
+
     private void SendMessage()
     {
         Message newMessage = new Message()
