@@ -2,30 +2,30 @@
 @using FrogChatModel.DTOModel;
 @using FrogChatService.WebApiUtils;
 @using System.Security.Claims;
-@inject IChatLayoutViewModel chatLayout
+@inject IChatLayoutViewModel chatLayoutViewModel
 @inject IClientStorage clientStorage
 @inject IJSRuntime JS
 <div class="top-row ">
-    <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayout.DisconnectAsync">Disconnect</button> <button @onclick="CheckList">Refresh UI</button>
+    <button class="btn btn-sm btn-warning ml-md-auto" @onclick="chatLayoutViewModel.DisconnectAsync">Disconnect</button> <button @onclick="CheckList">Refresh UI</button>
 </div>
-<div class="container-fluid bg-secondary">
-    <div class="row" style="height: 80vh; background: green;">
+<div class="container-fluid bg-secondary text-white">
+    <div class="row" style="height: 80vh;">
         <div class="col-12 col-sm-8 ">
 
-            <div @ref="messageParentDiv" class="row overflow-auto" style="height: 80vh; background: red;">
+            <div @ref="messageParentDiv" class="row bg-dark overflow-auto" style="height: 80vh; ">
                 @**@
                 <div class="col-12 col-sm-12">
-                    @foreach (var message in chatLayout.messageList)
+                    @foreach (var message in chatLayoutViewModel.messageList)
                     {
-                        <MessageComponent message="@message" />
-                        @*Task.Delay(500);*@
+                        var temp = message;
+                        <MessageComponent message="@temp"   />
                     }
                 </div>
             </div>
-            <div class="row" style="height: 5vh; background: blue;">
+            <div class="row" style=" "> 
                 <div class="col-9 col-sm-9 p-0">
-                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" 
-                    @bind="chatLayout._inputMessage" @bind:event="oninput" @onkeydown="@Enter">
+                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                           @bind="chatLayoutViewModel._inputMessage" @bind:event="oninput" @onkeydown="@Enter">
                 </div>
                 <div class="col-3 col-sm-3 text-center p-0">
                     <button class="btn  btn-primary col-12 " @onclick="SendMessage">Send </button>
@@ -33,12 +33,12 @@
             </div>
 
         </div>
-        <div class="col-sm-4 d-none d-sm-block" style="background: pink;">
+        <div class="col-sm-4 d-none d-sm-block" style="background: black;">
             <div class="row overflow-auto h-auto" style="">
                 @*height: 90vh;*@
                 <div class="col-sm-12">
 
-                    @foreach (var user in chatLayout.userList)
+                    @foreach (var user in chatLayoutViewModel.userList)
                     {
                         <div class="row">
                             <div class="col-sm-3 col-md-3  col-3  col-lg-2">
@@ -82,9 +82,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        chatLayout.NotifyToUIUpdate += NotifyToUIUpdate;
-        chatLayout.NotifyToUIOnMessageDelete += OnMessageDeleteUpdate;
-        await chatLayout.init(@"https://localhost:44305/chathub", await clientStorage.GetItemAsStringAsync("Token"));
+        chatLayoutViewModel.NotifyToUIUpdate += NotifyToUIUpdate;
+        chatLayoutViewModel.NotifyToUIOnMessageDelete += OnMessageDeleteUpdate;
+        await chatLayoutViewModel.init(@"https://localhost:44305/chathub", await clientStorage.GetItemAsStringAsync("Token"));
     }
 
     private void NotifyToUIUpdate()
@@ -94,20 +94,22 @@
     }
     private async void OnMessageDeleteUpdate()
     {
-        List<Message> TempmessageList = chatLayout.messageList;
-        chatLayout.messageList = new();
+        List<Message> TempmessageList = chatLayoutViewModel.messageList;
+        chatLayoutViewModel.messageList = new();
         StateHasChanged();
         foreach (var msg in TempmessageList)
         {
-            chatLayout.messageList.Add(msg);
+            chatLayoutViewModel.messageList.Add(msg);
              StateHasChanged();
             await Task.Delay(100);
         }
+
+        await InvokeAsync(StateHasChanged);
     }
 
     void CheckList()
     {
-        foreach (var msg in chatLayout.messageList)
+        foreach (var msg in chatLayoutViewModel.messageList)
         {
             Console.WriteLine($" {msg.id}  : {msg.content} ");
         }
@@ -117,13 +119,13 @@
     {
         Message newMessage = new Message()
             {
-                content = chatLayout._inputMessage,
+                content = chatLayoutViewModel._inputMessage,
                 dateTime = DateTime.Now,
                 user = userDto
             };
-        if (!string.IsNullOrEmpty(chatLayout._inputMessage))
+        if (!string.IsNullOrEmpty(chatLayoutViewModel._inputMessage))
         {
-            chatLayout.SendMessage(newMessage);
+            chatLayoutViewModel.SendMessage(newMessage);
         }
     }
 

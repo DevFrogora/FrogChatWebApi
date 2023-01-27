@@ -14,47 +14,59 @@
                 <div class="d-inline fw-bold"> @messageViewModel.message.user.Name</div>
                 <div class="d-inline fw-light fs-6"> @messageViewModel.message.dateTime.ToLongTimeString() </div>
             </div>
-            <div class="col-sm-2 col-2">
-                <div class="dropdown text-end">
-                    <span class="  " id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="bi bi-three-dots text-end" data-toggle="dropdown">
+            @if (!IsEditing)
+            {
+                <div class="col-sm-2 col-2">
+                    <div class="dropdown text-end">
+                        <span class="  " id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="bi bi-three-dots text-end" data-toggle="dropdown">
+                            </span>
                         </span>
-                    </span>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <AuthorizeView>
-                            <Authorized>
-                                @if (QueryIdentity.GetClaimValue(context.User, ClaimTypes.Email).Equals(messageViewModel.message.user.Email))
-                                {
-                                    <li>
-                                        <a class="dropdown-item" @onclick="@messageViewModel.Edit">Edit</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" @onclick="@messageViewModel.Delete">Delete</a>
-                                    </li>
-                                }
-                            </Authorized>
-                        </AuthorizeView>
+                        <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
+                            <AuthorizeView>
+                                <Authorized>
+                                    @if (QueryIdentity.GetClaimValue(context.User, ClaimTypes.Email).Equals(messageViewModel.message.user.Email))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item text-white" @onclick="Edit">Edit</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-white" @onclick="@messageViewModel.Delete">Delete</a>
+                                        </li>
+                                    }
+                                </Authorized>
+                            </AuthorizeView>
 
-                        <li>
-                            <a class="dropdown-item" @onclick="@messageViewModel.CopyId">copy id</a>
-                        </li>
-                    </ul>
+                            <li>
+                                <a class="dropdown-item text-white" @onclick="@messageViewModel.CopyId">copy id</a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
-
-            </div>
+            }
         </div>
 
         <div class="row">
             <div class="col-sm-12 col-12 ">
-                <div> @messageViewModel.message.content </div>
+                @if (IsEditing)
+                {
+                    <div contenteditable="true" class="bg-secondary"> @messageViewModel.message.content </div>
+                }
+                else
+                {
+                    <div> @messageViewModel.message.content </div>
+                }
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-sm-12 col-12 ">
-                <div> ID : @messageViewModel.message.id </div>
+        @if (IsEditing)
+        {
+            <div class="row">
+                <div class="d-flex flex-row ">
+                    <button @onclick="EditCancel"> cancel  </button> <button> save  </button>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 
@@ -68,4 +80,15 @@
     {
         messageViewModel.message = message;
     }
+
+    bool IsEditing = false;
+    private void Edit()
+    {
+        IsEditing = true;
+    }
+    private void EditCancel()
+    {
+        IsEditing = false;
+    }
+
 }
