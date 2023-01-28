@@ -12,7 +12,7 @@ namespace ViewModel.Chat
     public class ChatLayoutViewModel :IChatLayoutViewModel
     {
         private readonly IChatService chatService;
-        public List<UserDto> userList { get; set; } = new();
+        public List<ChatUser> userList { get; set; } = new();
         public List<Message> messageList { get; set; } = new();
 
 
@@ -61,7 +61,7 @@ namespace ViewModel.Chat
             }
         }
 
-        private void ChatService_OnUserListReceivedPublisher(List<UserDto> _userList)
+        private void ChatService_OnUserListReceivedPublisher(List<ChatUser> _userList)
         {
             userList = _userList;
             NotifyToUIUpdate();

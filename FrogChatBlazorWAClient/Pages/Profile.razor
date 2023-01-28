@@ -32,7 +32,7 @@
             Name : @QueryIdentity.GetClaimValue(context.User,ClaimTypes.Name);
 
             Picture : @QueryIdentity.GetClaimValue(context.User,"picture");
-@*            <table>
+            <table>
                 @foreach (var claim in context.User.Claims.ToList())
                 {
                     <tr>
@@ -41,7 +41,7 @@
                     </tr>
                 }
             </table>
-*@
+
 
         </Authorized>
     </AuthorizeView>

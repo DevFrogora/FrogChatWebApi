@@ -47,13 +47,14 @@ namespace FrogChatWebApi.Hubs
             if (founduser == 0)
             {
                 UserHandler.UserCount.Add(userId,1);
-                UserDto userDto = new UserDto()
+                ChatUser userDto = new ChatUser()
                 {
                     Name = Context.User.Identity.Name,
                     Email = Context.User.Claims.Where(claim => claim.Type == ClaimTypes.Email).Select(claim => claim.Value).FirstOrDefault(),
                     PhotoUrl = Context.User.Claims.Where(claim => claim.Type == "picture").Select(claim => claim.Value).FirstOrDefault(),
                     Username = Context.User.Claims.Where(claim => claim.Type == "username").Select(claim => claim.Value).FirstOrDefault(),
                     Id = userId,
+                    Roles = Context.User.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value).ToList(),
                 };
                 chatPersistenceData.users.Add(userDto);
                 //Console.WriteLine(Context.User.Identity.Name);

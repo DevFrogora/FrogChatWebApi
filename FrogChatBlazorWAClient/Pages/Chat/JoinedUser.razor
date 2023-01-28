@@ -1,0 +1,23 @@
+﻿@using FrogChatModel.DTOModel;
+<div class="row">
+    <div class="col-sm-3 col-md-3  col-3  col-lg-2">
+
+        <img src="@userDto.PhotoUrl" class="w-100 h-100"
+             alt="avatar 1" referrerpolicy="no-referrer">
+
+    </div>
+    <div class="col-sm-9 col-md-9 col-9  col-lg-10 p-lg-2 p-md-0">
+
+        <div style="@style">
+            @userDto.Name
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public ChatUser userDto { get; set; }
+    [Parameter]
+    public string style { get; set; }
+}

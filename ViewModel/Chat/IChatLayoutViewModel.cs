@@ -10,7 +10,7 @@ namespace ViewModel.Chat
 {
     public interface IChatLayoutViewModel
     {
-        List<UserDto> userList { get; set; }
+        List<ChatUser> userList { get; set; }
         List<Message> messageList { get; set; }
         string _inputMessage { get; set; }
         Task DisconnectAsync();

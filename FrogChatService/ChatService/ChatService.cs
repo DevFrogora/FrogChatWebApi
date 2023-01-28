@@ -14,7 +14,7 @@ namespace FrogChatService.ChatService
         private HubConnection? hubConnection;
 
         public event Action<Message> OnMessageReceivedPublisher;
-        public event Action<List<UserDto>> OnUserListReceivedPublisher;
+        public event Action<List<ChatUser>> OnUserListReceivedPublisher;
         public event Action<int> OnMessageDelete;
         public event Action<Message> OnMessageEdit;
 
@@ -52,12 +52,12 @@ namespace FrogChatService.ChatService
             });
 
 
-            hubConnection.On<List<UserDto>>("Connected", (userList) =>
+            hubConnection.On<List<ChatUser>>("Connected", (userList) =>
             {
                 OnUserListReceivedPublisher(userList);
             });
 
-            hubConnection.On<List<UserDto>>("Disconnected", (userList) =>
+            hubConnection.On<List<ChatUser>>("Disconnected", (userList) =>
             {
                 OnUserListReceivedPublisher(userList);
             });

@@ -1,4 +1,5 @@
-﻿using FrogChatModel.DTOModel;
+﻿using FrogChatModel.ChatModel;
+using FrogChatModel.DTOModel;
 
 namespace FrogChatWebApi.Hubs
 {
@@ -14,7 +15,7 @@ namespace FrogChatWebApi.Hubs
             }
         }
 
-        public List<UserDto> users = new();
+        public List<ChatUser> users = new();
 
     }
 }

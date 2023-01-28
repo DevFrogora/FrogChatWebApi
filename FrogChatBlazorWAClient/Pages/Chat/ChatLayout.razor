@@ -18,11 +18,11 @@
                     @foreach (var message in chatLayoutViewModel.messageList)
                     {
                         var temp = message;
-                        <MessageComponent message="@temp"   />
+                        <MessageComponent message="@temp" />
                     }
                 </div>
             </div>
-            <div class="row" style=" "> 
+            <div class="row" style=" ">
                 <div class="col-9 col-sm-9 p-0">
                     <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
                            @bind="chatLayoutViewModel._inputMessage" @bind:event="oninput" @onkeydown="@Enter">
@@ -38,23 +38,49 @@
                 @*height: 90vh;*@
                 <div class="col-sm-12">
 
-                    @foreach (var user in chatLayoutViewModel.userList)
+                    @*@if(chatLayoutViewModel.userList != null){*@
+
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("Admin")))
                     {
-                        <div class="row">
-                            <div class="col-sm-3 col-md-3  col-3  col-lg-2">
-
-                                <img src="@user.PhotoUrl" class="w-100 h-100"
-                                 alt="avatar 1"  referrerpolicy="no-referrer">
-
+                        @if(isAdmin){
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    -Admin-
+                                </div>
                             </div>
-                            <div class="col-sm-9 col-md-9 col-9  col-lg-10 p-lg-2 p-md-0">
-
-                                @user.Name
-
-                            </div>
-                        </div>
-
+                            isAdmin = false;
+                        }
+                        <JoinedUser userDto="@user" style="color: red;"></JoinedUser>
                     }
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("Manager") && !user.Roles.Contains("Admin")))
+                    {
+                        @if (isManager)
+                        {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    -Manager-
+                                </div>
+                            </div>
+                            isManager = false;
+                        }
+                        <JoinedUser userDto="user" style="color: cornflowerblue;"></JoinedUser>
+                    }
+
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("User") && !user.Roles.Contains("Manager") && !user.Roles.Contains("Admin")))
+                    {
+                        @if (isUser)
+                        {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    -User-
+                                </div>
+                            </div>
+                            isUser = false;
+                        }
+                        <JoinedUser userDto="user" style="color: whitesmoke;"></JoinedUser>
+                    }
+                    @*}*@
+
                 </div>
             </div>
         </div>
@@ -100,7 +126,7 @@
         foreach (var msg in TempmessageList)
         {
             chatLayoutViewModel.messageList.Add(msg);
-             StateHasChanged();
+            StateHasChanged();
             await Task.Delay(100);
         }
 
@@ -136,4 +162,8 @@
             SendMessage();
         }
     }
+
+    private bool isAdmin = true;
+    private bool isManager = true;
+    private bool isUser = true;
 }

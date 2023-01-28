@@ -13,7 +13,7 @@ namespace FrogChatService.ChatService
     public interface IChatService
     {
         event Action<Message> OnMessageReceivedPublisher;
-        event Action<List<UserDto>> OnUserListReceivedPublisher;
+        event Action<List<ChatUser>> OnUserListReceivedPublisher;
         event Action<int> OnMessageDelete;
         event Action<Message> OnMessageEdit;
 
