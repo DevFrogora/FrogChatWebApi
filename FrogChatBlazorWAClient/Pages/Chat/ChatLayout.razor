@@ -39,8 +39,23 @@
                 <div class="col-sm-12">
 
                     @*@if(chatLayoutViewModel.userList != null){*@
-
-                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("Admin")))
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("SuperAdmin")))
+                    {
+                        @if (isSuperAdmin)
+                        {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    -SuperAdmin-
+                                </div>
+                            </div>
+                            isSuperAdmin = false;
+                        }
+                        <JoinedUser userDto="@user" style="color: red;"></JoinedUser>
+                    }
+                    @{ isSuperAdmin = true;}
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("Admin")
+                    && !user.Roles.Contains("SuperAdmin")
+                    ))
                     {
                         @if(isAdmin){
                             <div class="row">
@@ -50,9 +65,15 @@
                             </div>
                             isAdmin = false;
                         }
-                        <JoinedUser userDto="@user" style="color: red;"></JoinedUser>
+                        <JoinedUser userDto="@user" style="color: orangered;"></JoinedUser>
                     }
-                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("Manager") && !user.Roles.Contains("Admin")))
+                    @{
+                        isAdmin = true;
+                    }
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("Manager") 
+                    && !user.Roles.Contains("Admin")
+                    && !user.Roles.Contains("SuperAdmin")
+                    ))
                     {
                         @if (isManager)
                         {
@@ -65,8 +86,15 @@
                         }
                         <JoinedUser userDto="user" style="color: cornflowerblue;"></JoinedUser>
                     }
+                    @{
+                        isManager = true;
+                    }
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("User") 
+                    && !user.Roles.Contains("Manager") 
+                    && !user.Roles.Contains("Admin")
+                    && !user.Roles.Contains("SuperAdmin")
 
-                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("User") && !user.Roles.Contains("Manager") && !user.Roles.Contains("Admin")))
+                    ))
                     {
                         @if (isUser)
                         {
@@ -79,7 +107,9 @@
                         }
                         <JoinedUser userDto="user" style="color: whitesmoke;"></JoinedUser>
                     }
-                    @*}*@
+                    @{
+                        isUser = true;
+                    }
 
                 </div>
             </div>
@@ -166,4 +196,6 @@
     private bool isAdmin = true;
     private bool isManager = true;
     private bool isUser = true;
+    private bool isSuperAdmin = true;
+
 }
