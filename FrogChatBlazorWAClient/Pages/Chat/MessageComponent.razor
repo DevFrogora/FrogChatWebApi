@@ -15,7 +15,7 @@
                 <div class="d-inline fw-bold"> @messageViewModel.message.user.Name</div>
                 <div class="d-inline fw-light fs-6"> @messageViewModel.message.dateTime.ToLongTimeString() </div>
             </div>
-            @if (!IsEditing)
+            @if (!messageViewModel.isEditing)
             {
                 <div class="col-sm-2 col-2">
                     <div class="dropdown text-end">
@@ -29,7 +29,7 @@
                                     @if (QueryIdentity.GetClaimValue(context.User, ClaimTypes.Email).Equals(messageViewModel.message.user.Email))
                                     {
                                         <li>
-                                            <a class="dropdown-item text-white" @onclick="Edit">Edit</a>
+                                            <a class="dropdown-item text-white" @onclick="messageViewModel.EditbtnClick">Edit</a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item text-white" @onclick="@messageViewModel.Delete">Delete</a>
@@ -50,7 +50,7 @@
 
         <div class="row">
             <div class="col-sm-12 col-12 ">
-                @if (IsEditing)
+                @if (messageViewModel.isEditing)
                 {
                     <div @ref="refMessageContent" contenteditable="true" class="bg-secondary" @oninput="OnEditingInput"> @messageViewModel.message.content </div>
                 }
@@ -61,7 +61,7 @@
                         @messageViewModel.message.content
                         @if (messageViewModel.message.isMessageEdited)
                         {
-                            <span class="fs-6"> (edited) </span>
+                            <span style="font-size: xx-small;"> (edited) </span>
                         }
                     </div>
                 }
@@ -69,11 +69,11 @@
 
 
         </div>
-        @if (IsEditing)
+        @if (messageViewModel.isEditing)
         {
             <div class="row">
                 <div class="d-flex flex-row ">
-                    <button @onclick="EditCancel"> cancel  </button> <button @onclick="EditSave"> save  </button>
+                    <button @onclick="messageViewModel.EditCancel"> cancel  </button> <button @onclick="messageViewModel.EditSave"> save  </button>
                 </div>
             </div>
         }
@@ -89,30 +89,12 @@
     protected override void OnInitialized()
     {
         messageViewModel.message = message;
-        tempEditingMsg = message.content;
     }
     ElementReference refMessageContent;
 
-    bool IsEditing = false;
-    private void Edit()
-    {
-        IsEditing = true;
-    }
-    private void EditCancel()
-    {
-        tempEditingMsg = messageViewModel.message.content;
-        IsEditing = false;
-    }
-    private void EditSave()
-    {
-        IsEditing = false;
-        messageViewModel.message.content = tempEditingMsg;
-        messageViewModel.Edit();
-    }
-    string tempEditingMsg;
     private async Task OnEditingInput(Microsoft.AspNetCore.Components.ChangeEventArgs eventArgs)
     {
-        tempEditingMsg = await JS.InvokeAsync<string>("getContentValue", refMessageContent);
-        Console.WriteLine(tempEditingMsg);
+        messageViewModel.tempEditingMsg = await JS.InvokeAsync<string>("getContentValue", refMessageContent);
+        Console.WriteLine(messageViewModel.tempEditingMsg);
     }
 }

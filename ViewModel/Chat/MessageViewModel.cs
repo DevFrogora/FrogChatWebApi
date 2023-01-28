@@ -15,6 +15,16 @@ namespace ViewModel.Chat
         private readonly IClipboardService clipboardService;
         private readonly IChatService chatService;
 
+        public bool isEditing { get; set; } = false;
+        public string tempEditingMsg { get; set; }
+        private bool IsEditingToogle
+        {
+            get
+            {
+                isEditing = !isEditing;
+                return isEditing;
+            }
+        }
 
         public MessageViewModel(IClipboardService clipboardService,IChatService chatService)
         {
@@ -39,6 +49,23 @@ namespace ViewModel.Chat
         public void Edit()
         {
             chatService.Edit_Message(message);
+        }
+
+        public void EditbtnClick()
+        {
+            tempEditingMsg = message.content;
+            _ = IsEditingToogle;
+        }
+        public void EditCancel()
+        {
+            tempEditingMsg = message.content;
+            _ = IsEditingToogle;
+        }
+        public void EditSave()
+        {
+            message.content = tempEditingMsg;
+            Edit();
+            _ = IsEditingToogle;
         }
     }
 }

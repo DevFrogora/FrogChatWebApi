@@ -13,5 +13,10 @@ namespace ViewModel.Chat
         void Delete();
         void CopyId();
         void Edit();
+        void EditbtnClick();
+        void EditCancel();
+        void EditSave();
+        string tempEditingMsg { get; set; }
+        bool isEditing { get; set; }
     }
 }
