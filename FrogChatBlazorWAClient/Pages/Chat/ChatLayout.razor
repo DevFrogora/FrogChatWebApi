@@ -39,7 +39,7 @@
                 <div class="col-sm-12">
 
                     @*@if(chatLayoutViewModel.userList != null){*@
-                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("SuperAdmin")))
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.HeighestRole == 4))
                     {
                         @if (isSuperAdmin)
                         {
@@ -52,12 +52,15 @@
                         }
                         <JoinedUser userDto="@user" style="color: red;"></JoinedUser>
                     }
-                    @{ isSuperAdmin = true;}
-                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("Admin")
-                    && !user.Roles.Contains("SuperAdmin")
+                    @{
+                        isSuperAdmin = true;
+                    }
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => checkRole(user, AdminChatRole.Name)
+                    && !checkRole(user, SuperAdminChatRole.Name)
                     ))
                     {
-                        @if(isAdmin){
+                        @if (isAdmin)
+                        {
                             <div class="row">
                                 <div class="col-sm-12">
                                     -Admin-
@@ -70,9 +73,9 @@
                     @{
                         isAdmin = true;
                     }
-                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("Manager") 
-                    && !user.Roles.Contains("Admin")
-                    && !user.Roles.Contains("SuperAdmin")
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => checkRole(user, ManagerChatRole.Name)
+                    && !checkRole(user, AdminChatRole.Name)
+                    && !checkRole(user, SuperAdminChatRole.Name)
                     ))
                     {
                         @if (isManager)
@@ -89,10 +92,10 @@
                     @{
                         isManager = true;
                     }
-                    @foreach (var user in chatLayoutViewModel.userList.Where(user => user.Roles.Contains("User") 
-                    && !user.Roles.Contains("Manager") 
-                    && !user.Roles.Contains("Admin")
-                    && !user.Roles.Contains("SuperAdmin")
+                    @foreach (var user in chatLayoutViewModel.userList.Where(user => checkRole(user, UserChatRole.Name)
+                    && !checkRole(user, ManagerChatRole.Name)
+                    && !checkRole(user, AdminChatRole.Name)
+                    && !checkRole(user, SuperAdminChatRole.Name)
 
                     ))
                     {
@@ -119,14 +122,54 @@
 <AuthorizeView>
     <Authorized>
         @{
-            userDto = new UserDto()
+
+            var roleList = context.User.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value).ToList();
+            int tempHeighestRole = 0;
+            foreach (var role in roleList)
+            {
+                if (role.Equals("SuperAdmin"))
                 {
-                    Email = QueryIdentity.GetClaimValue(context.User, ClaimTypes.Email),
+                    int myRoleLevel = 4;
+                    if (myRoleLevel > tempHeighestRole)
+                    {
+                        tempHeighestRole = myRoleLevel;
+                    }
+                }
+                if (role.Equals("Admin"))
+                {
+                    int myRoleLevel = 3;
+                    if (myRoleLevel > tempHeighestRole)
+                    {
+                        tempHeighestRole = myRoleLevel;
+                    }
+                }
+                if (role.Equals("Manager"))
+                {
+                    int myRoleLevel = 2;
+                    if (myRoleLevel > tempHeighestRole)
+                    {
+                        tempHeighestRole = myRoleLevel;
+                    }
+                }
+                if (role.Equals("User"))
+                {
+                    int myRoleLevel = 1;
+                    if (myRoleLevel > tempHeighestRole)
+                    {
+                        tempHeighestRole = myRoleLevel;
+                    }
+                }
+                userDto = new ChatUser()
+                    {
+                        Email = QueryIdentity.GetClaimValue(context.User, ClaimTypes.Email),
 
-                    Name = QueryIdentity.GetClaimValue(context.User, ClaimTypes.Name),
+                        Name = QueryIdentity.GetClaimValue(context.User, ClaimTypes.Name),
 
-                    PhotoUrl = QueryIdentity.GetClaimValue(context.User, "picture"),
+                        PhotoUrl = QueryIdentity.GetClaimValue(context.User, "picture"),
+                        HeighestRole = tempHeighestRole,
+
                 };
+            }
         }
     </Authorized>
 </AuthorizeView>
@@ -134,7 +177,7 @@
 
 @code {
     private ElementReference messageParentDiv;
-    private UserDto userDto = new();
+    private ChatUser userDto = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -165,10 +208,25 @@
 
     void CheckList()
     {
-        foreach (var msg in chatLayoutViewModel.messageList)
+        foreach (var user in chatLayoutViewModel.userList)
         {
-            Console.WriteLine($" {msg.id}  : {msg.content} ");
+
+
+            Console.WriteLine(user.Username);
+            foreach (var role in user.Roles)
+            {
+                Console.WriteLine(role.Name);
+            }
         }
+    }
+
+    private bool checkRole(ChatUser user, string RoleName)
+    {
+        if (user.Roles.Where(role => role.Name.Equals(RoleName)).Any())
+        {
+            return true;
+        }
+        return false;
     }
 
     private void SendMessage()
@@ -197,5 +255,26 @@
     private bool isManager = true;
     private bool isUser = true;
     private bool isSuperAdmin = true;
+
+    private ChatRole SuperAdminChatRole = new ChatRole()
+        {
+            Name = "SuperAdmin",
+            Color = "red",
+        };
+    private ChatRole AdminChatRole = new ChatRole()
+        {
+            Name = "Admin",
+            Color = "orangered",
+        };
+    private ChatRole ManagerChatRole = new ChatRole()
+        {
+            Name = "Manager",
+            Color = "cornflowerblue",
+        };
+    private ChatRole UserChatRole = new ChatRole()
+        {
+            Name = "User",
+            Color = "whitesmoke",
+        };
 
 }

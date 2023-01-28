@@ -16,6 +16,8 @@ namespace FrogChatModel.ChatModel
         public string Email { get; set; }
         public string PhotoUrl { get; set; }
         
-        public List<string> Roles { get; set; }
+        public List<ChatRole> Roles { get; set; }
+        public int HeighestRole { get; set; }
+
     }
 }

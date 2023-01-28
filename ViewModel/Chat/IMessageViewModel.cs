@@ -18,5 +18,7 @@ namespace ViewModel.Chat
         void EditSave();
         string tempEditingMsg { get; set; }
         bool isEditing { get; set; }
+        string userNameColor { get; set; }
+        void HeighestRole();
     }
 }

@@ -12,8 +12,8 @@
 
         <div class="row">
             <div class="col-sm-10 col-10 ">
-                <div class="d-inline fw-bold"> @messageViewModel.message.user.Name</div>
-                <div class="d-inline fw-light fs-6"> @messageViewModel.message.dateTime.ToLongTimeString() </div>
+                <div class="d-inline fw-bold" style="@messageViewModel.userNameColor"> @messageViewModel.message.user.Name</div>
+                <div class="d-inline fw-light" style="font-size:x-small"> @messageViewModel.message.dateTime.ToLongTimeString() </div>
             </div>
             @if (!messageViewModel.isEditing)
             {
@@ -26,14 +26,19 @@
                         <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
                             <AuthorizeView>
                                 <Authorized>
-                                    @if (QueryIdentity.GetClaimValue(context.User, ClaimTypes.Email).Equals(messageViewModel.message.user.Email))
-                                    {
-                                        <li>
-                                            <a class="dropdown-item text-white" @onclick="messageViewModel.EditbtnClick">Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item text-white" @onclick="@messageViewModel.Delete">Delete</a>
-                                        </li>
+                                    @{
+                                        var roles = context.User.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value).ToList();
+                                        @if (QueryIdentity.GetClaimValue(context.User, ClaimTypes.Email).Equals(messageViewModel.message.user.Email) ||
+                                roles.Contains("SuperAdmin") || roles.Contains("Admin") || roles.Contains("Manager")
+                                )
+                                        {
+                                            <li>
+                                                <a class="dropdown-item text-white" @onclick="messageViewModel.EditbtnClick">Edit</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-white" @onclick="@messageViewModel.Delete">Delete</a>
+                                            </li>
+                                        }
                                     }
                                 </Authorized>
                             </AuthorizeView>
@@ -89,6 +94,7 @@
     protected override void OnInitialized()
     {
         messageViewModel.message = message;
+        messageViewModel.HeighestRole();
     }
     ElementReference refMessageContent;
 
@@ -97,4 +103,5 @@
         messageViewModel.tempEditingMsg = await JS.InvokeAsync<string>("getContentValue", refMessageContent);
         Console.WriteLine(messageViewModel.tempEditingMsg);
     }
+
 }

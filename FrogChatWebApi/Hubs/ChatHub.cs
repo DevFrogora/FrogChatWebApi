@@ -47,6 +47,8 @@ namespace FrogChatWebApi.Hubs
             if (founduser == 0)
             {
                 UserHandler.UserCount.Add(userId,1);
+                List<ChatRole> roles = new();
+
                 ChatUser userDto = new ChatUser()
                 {
                     Name = Context.User.Identity.Name,
@@ -54,8 +56,61 @@ namespace FrogChatWebApi.Hubs
                     PhotoUrl = Context.User.Claims.Where(claim => claim.Type == "picture").Select(claim => claim.Value).FirstOrDefault(),
                     Username = Context.User.Claims.Where(claim => claim.Type == "username").Select(claim => claim.Value).FirstOrDefault(),
                     Id = userId,
-                    Roles = Context.User.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value).ToList(),
+                    Roles = roles,
                 };
+                var roleList = Context.User.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value).ToList();
+                foreach(var role in roleList)
+                {
+                    if (role.Equals("SuperAdmin"))
+                    {
+                        roles.Add(new ChatRole()
+                        {
+                            Name = "SuperAdmin",
+                            Color = "red",
+                            Level=4,
+                        });
+                        
+                    }
+                    if (role.Equals("Admin"))
+                    {
+                        roles.Add(new ChatRole()
+                        {
+                            Name = "Admin",
+                            Color = "orangered",
+                            Level = 3,
+
+                        });
+                    }
+                    if (role.Equals("Manager"))
+                    {
+                        roles.Add(new ChatRole()
+                        {
+                            Name = "Manager",
+                            Color = "cornflowerblue",
+                            Level = 2,
+
+                        });
+                    }
+                    if (role.Equals("User"))
+                    {
+                        roles.Add(new ChatRole()
+                        {
+                            Name = "User",
+                            Color = "whitesmoke",
+                            Level = 1,
+
+                        });
+                    }
+                }
+                int tempHeighestRole = 0;
+                foreach(var role in userDto.Roles)
+                {
+                    if(role.Level > tempHeighestRole)
+                    {
+                        userDto.HeighestRole = role.Level;
+                        tempHeighestRole= role.Level;
+                    }
+                }
                 chatPersistenceData.users.Add(userDto);
                 //Console.WriteLine(Context.User.Identity.Name);
             }

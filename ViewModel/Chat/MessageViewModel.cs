@@ -67,5 +67,26 @@ namespace ViewModel.Chat
             Edit();
             _ = IsEditingToogle;
         }
+
+        public string userNameColor { get; set; }
+        public void HeighestRole()
+        {
+            if (message.user.HeighestRole == 4)
+            {
+                userNameColor = "color:red;";
+            }
+            if (message.user.HeighestRole == 3)
+            {
+                userNameColor = "color:orangered;";
+            }
+            if (message.user.HeighestRole == 2)
+            {
+                userNameColor = "color:cornflowerblue;";
+            }
+            if (message.user.HeighestRole == 1)
+            {
+                userNameColor = "color:whitesmoke;";
+            }
+        }
     }
 }

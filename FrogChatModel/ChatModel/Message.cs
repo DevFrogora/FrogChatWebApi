@@ -12,7 +12,7 @@ namespace FrogChatModel.ChatModel
         public int id { get; set; }
         public string content { get; set; }
         public DateTime dateTime { get; set; }
-        public UserDto user { get; set; }
+        public ChatUser user { get; set; }
         public bool IsNotice => content.StartsWith("[Notice]");
         public bool isMessageEdited { get; set; }
         //public bool Mine { get; set; }
